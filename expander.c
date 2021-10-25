@@ -61,6 +61,7 @@ void	expand_word(char *str, t_list **head, int a, size_t i)
 		i++;
     }
 	// p = ll_to_string(*head);
+	//docker was here
 }
 
 t_type	*ft_lstnew_type2(char *content, int i, int a)
