@@ -6,7 +6,7 @@
 /*   By: mamali <mamali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 00:53:44 by macbookpro        #+#    #+#             */
-/*   Updated: 2021/10/24 13:03:20 by mamali           ###   ########.fr       */
+/*   Updated: 2021/10/25 20:13:57 by mamali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,4 +95,23 @@
 // 	tmp = malloc(sizeof(t_cl));
 // 	tmp->c = c;
 // 	ft_lstadd_back(head, ft_lstnew(tmp));
+// }
+
+// int    add_bs(t_list **head, int cnt)
+// {
+// 	t_cl	*tmp;
+
+// 	tmp = malloc(sizeof(t_cl));
+// 	tmp->c = '\\';
+// 	if (cnt % 2 == 1)
+// 	{
+// 		cnt = (cnt - 1) / 2;
+// 		while (cnt--)
+// 			ft_lstadd_back(head, ft_lstnew(tmp));
+// 		return (0);
+// 	}
+// 	cnt = cnt / 2;
+// 	while (cnt--)
+// 		ft_lstadd_back(head, ft_lstnew(tmp));
+// 	return (1);
 // }

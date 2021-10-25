@@ -1,40 +1,24 @@
 #include "minishell.h"
 
-int    add_bs(t_list **head, int cnt)
+void	add_to_lk(char *s, int a, t_cl *tmp, t_list **list_keys)
 {
-	t_cl	*tmp;
-
 	tmp = malloc(sizeof(t_cl));
-	tmp->c = '\\';
-	if (cnt % 2 == 1)
-	{
-		cnt = (cnt - 1) / 2;
-		while (cnt--)
-			ft_lstadd_back(head, ft_lstnew(tmp));
-		return (0);
-	}
-	cnt = cnt / 2;
-	while (cnt--)
-		ft_lstadd_back(head, ft_lstnew(tmp));
-	return (1);
+	tmp->c = s[a];
+	ft_lstadd_back(list_keys, ft_lstnew(tmp));
 }
 
 // kanhez env variable f list o kancovrtiha l string
-void		to_skip(char *s, size_t *a, t_list **head, int f)
+void		to_skip(char *s, size_t *a, t_list **head, size_t i)
 {
 	t_cl	*tmp;
 	t_list	*list_keys;
-	size_t		i;
 	char	*key;
 
-	i = *a;
-	f = 0;
 	list_keys = NULL;
+	tmp = NULL;
 	if (s[i + 1] == '\'')
 	{
-		tmp = malloc(sizeof(t_cl));
-		tmp->c = s[*a];
-        ft_lstadd_back(&list_keys, ft_lstnew(tmp));
+		add_to_lk(s, *a, tmp, &list_keys);
 		key = ll_to_string(list_keys);
 		add_string(head, key);
 		return ;
@@ -42,12 +26,7 @@ void		to_skip(char *s, size_t *a, t_list **head, int f)
 	(*a)++;
 	while (((s[(*a)] != '$') && (s[(*a)] != '\'') && (s[(*a)] != ' ') \
 		&& (s[(*a)] != '"') && (s[(*a)] != '-')) && s[(*a)])
-	{
-		tmp = malloc(sizeof(t_cl));
-		tmp->c = s[*a];
-        ft_lstadd_back(&list_keys, ft_lstnew(tmp));
-		(*a)++;
-	}
+			add_to_lk(s, (*a)++, tmp, &list_keys);
 	key = ll_to_string(list_keys);
 	key = return_env_value(key);
 	add_string(head, key);
@@ -55,33 +34,21 @@ void		to_skip(char *s, size_t *a, t_list **head, int f)
 }
 // ila kan khasso yt2expanda kanb6a n2ajouter f les charactres f wahd list
 // hta kanl6a $ HHHHH
-char    *expand_word(char *str, t_list **head, int a)
+void	expand_word(char *str, t_list **head, int a, size_t i)
 {
-    char    *p;
-    size_t	i;
-    int     cnt;
 	t_cl	*tmp;
-
-    i = 0;
+	size_t	f;
     while (1)
     {
 		tmp = malloc(sizeof(t_cl));
 		tmp->c = str[i];
-        cnt = 0;
         if (str[i] ==  '$')
-        {
-			//ila l6it $ kanskipi kolchi hta kanl6a 
-			// '', "", ' ', $
-			cnt = real_character1(str, i, '$');
-			if (add_bs(head, cnt))
-			{
-				to_skip(str , &i, head, a);
-			}
-		}
-        else if (str[i] == ' ' && a == 0)
 		{
-			//ila kan type d lword 0 o l6It espace kanzid espace lewla
-			// o kanskipi les espaces lakhrine
+			f = i;
+			to_skip(str , &i, head, f);
+		}
+		else if (str[i] == ' ' && a == 0)
+		{
 			ft_lstadd_back(head, ft_lstnew(tmp));
 			while (str[i] == ' ')
 				i++;
@@ -93,10 +60,7 @@ char    *expand_word(char *str, t_list **head, int a)
 			break;
 		i++;
     }
-	// printlist_cl(*head);
-	p = ll_to_string(*head);
-	//to do
-    return (p);
+	// p = ll_to_string(*head);
 }
 
 t_type	*ft_lstnew_type2(char *content, int i, int a)
@@ -127,7 +91,7 @@ t_type	*expander(t_type *tmp)
     {
 		head = NULL;
         if (tmp2->type == 2 || tmp2->type == 0)
-           expand_word(tmp2->word, &head, tmp2->type);
+           expand_word(tmp2->word, &head, tmp2->type, 0);
 		else
 			add_string(&head, tmp2->word);
 		str = ll_to_string(head);
@@ -160,11 +124,9 @@ char	*return_env_value(char *key)
 	size_t		i;
 
 	env = g_data->env;
-	// printlist(g_data->env);
 	i = 0;
 	while (env)
 	{
-		// printf("new key = %c\n", key[i - 1]);
 		tmp = (t_env *)env->content;
 		i = ft_strlen(tmp->name);
 		if (i == ft_strlen(key))
