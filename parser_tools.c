@@ -112,7 +112,7 @@ int	add_sq(size_t *i, char c, t_type **head)
  then i convert the list to a string, finally i add the string to a list of type t_type that
  contains the string and his type.*/
 
-void	function(t_type **head, char **tab, size_t i, int f)
+void	ffunction(t_type **head, char **tab, size_t i, int f)
 {
 	int		l;
 
@@ -121,7 +121,7 @@ void	function(t_type **head, char **tab, size_t i, int f)
 		l++;
 	if (l == 1)
 	{
-		if (g_data->line[(*i)] == '\'' || g_data->line[(*i)] == '"')
+		if (g_data->line[i] == '\'' || g_data->line[i] == '"')
 			ft_lstadd_back_type(head,ft_lstnew_type(tab[0], 0, 1));
 		else
 			ft_lstadd_back_type(head,ft_lstnew_type(tab[0], 0, 0));
@@ -133,7 +133,7 @@ void	function(t_type **head, char **tab, size_t i, int f)
 			ft_lstadd_back_type(head,ft_lstnew_type(tab[f], 0, 0));      
 			f++;
 		}
-		if (g_data->line[(*i)] == '\'' || g_data->line[(*i)] == '"')
+		if (g_data->line[i] == '\'' || g_data->line[i] == '"')
 			ft_lstadd_back_type(head,ft_lstnew_type(tab[f], 0, 1));
 		else
 			ft_lstadd_back_type(head,ft_lstnew_type(tab[f], 0, 0));
@@ -156,28 +156,7 @@ int		adds(size_t *i, t_type **head)
 	}
 	str = ll_to_string(list);
 	tab = ft_split(str, ' ');
-	function(head, tab, *i, 0);
-	// while (tab[l])
-	// 	l++;
-	// if (l == 1)
-	// {
-	// 	if (g_data->line[(*i)] == '\'' || g_data->line[(*i)] == '"')
-	// 		ft_lstadd_back_type(head,ft_lstnew_type(tab[0], 0, 1));
-	// 	else
-	// 		ft_lstadd_back_type(head,ft_lstnew_type(tab[0], 0, 0));
-	// }
-	// else
-	// {
-	// 	while (tab[f] && f < (l - 1))
-	// 	{
-	// 		ft_lstadd_back_type(head,ft_lstnew_type(tab[f], 0, 0));      
-	// 		f++;
-	// 	}
-	// 	if (g_data->line[(*i)] == '\'' || g_data->line[(*i)] == '"')
-	// 		ft_lstadd_back_type(head,ft_lstnew_type(tab[f], 0, 1));
-	// 	else
-	// 		ft_lstadd_back_type(head,ft_lstnew_type(tab[f], 0, 0));
-	// }
+	ffunction(head, tab, *i, 0);
 	(*i)--;
 	return (1);
 }
