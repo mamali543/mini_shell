@@ -1,5 +1,28 @@
 #include "minishell.h"
 
+void	help_args(t_type *tmp, t_list **args)
+{
+	char	*str;
+	int		i;
+
+	i = 0;
+	if (tmp->a == 1)
+	{
+		while (tmp->a == 1)
+		{
+			if (i == 0)
+				str = ft_strjoin(tmp->word, tmp->next->word);
+			else
+				str = ft_strjoin(str, tmp->next->word);
+			i++;
+			tmp = tmp->next;
+		}
+		ft_lstadd_back(args, ft_lstnew(str));
+	}
+	else
+		ft_lstadd_back(args, ft_lstnew(tmp->word));
+}
+
 t_list	*get_args(t_list **args ,t_type	*types)
 {
 	t_type	*tmp;
@@ -18,26 +41,7 @@ t_list	*get_args(t_list **args ,t_type	*types)
 			if (tmp->prev != NULL)
 			{
 				if (tmp->prev->type != 4)
-				{
-					char	*str;
-					int		i;
-					i = 0;
-					if (tmp->a == 1)
-					{
-						while (tmp->a == 1)
-						{
-							if (i == 0)
-								str = ft_strjoin(tmp->word, tmp->next->word);
-							else
-								str = ft_strjoin(str, tmp->next->word);
-							i++;
-							tmp = tmp->next;
-						}
-						ft_lstadd_back(args, ft_lstnew(str));
-					}
-					else
-						ft_lstadd_back(args, ft_lstnew(tmp->word));
-				}
+					help_args(tmp, args);
 			}
 			else
 				ft_lstadd_back(args, ft_lstnew(tmp->word));
@@ -56,11 +60,9 @@ void	get_out(int *i, t_list *list_files)
 	if (list_files)
 	{
 		s = ft_lstlast(list_files)->content;
-		printf("file out = %s\n", s);
+		printf("file_out is = %s\n", s);
 		a = ft_strlen(list_files->content);
 		j = ft_strlen(s);
-		printf("%zu :: %zu\n", a, j);
-		// printf("before loup : %zu\n :: %zu\n", a, j);
 		*i = open(s, O_WRONLY | O_CREAT | O_TRUNC , 0777);
 		while (list_files)
 		{
