@@ -112,29 +112,11 @@ int	add_sq(size_t *i, char c, t_type **head)
  then i convert the list to a string, finally i add the string to a list of type t_type that
  contains the string and his type.*/
 
-int		adds(size_t *i, t_type **head)
+void	function(t_type **head, char **tab, size_t i, int f)
 {
-	t_cl	*tmp;
-	t_list  *list;
-	char    **tab;
-	char *str;
-	int     l;
-	int		f;
+	int		l;
 
-	l  = 0;
-	f = 0;
-	list = NULL;
-	while ((g_data->line[(*i)] != '\'' && g_data->line[(*i)] != '"' && g_data->line[(*i)] != '|' && g_data->line[(*i)] != '>' && g_data->line[(*i)] != '<') && g_data->line[(*i)])
-	{
-		tmp = malloc(sizeof(t_cl));
-		tmp->c = g_data->line[(*i)];
-		ft_lstadd_back(&list, ft_lstnew(tmp));
-		(*i)++;
-	}
-	printf("c is = %c\n", g_data->line[(*i)]);
-	str = ll_to_string(list);
-	// ft_lstadd_back_type(head,ft_lstnew_type(str, 0));
-	tab = ft_split(str, ' ');
+	l = 0;
 	while (tab[l])
 		l++;
 	if (l == 1)
@@ -156,6 +138,46 @@ int		adds(size_t *i, t_type **head)
 		else
 			ft_lstadd_back_type(head,ft_lstnew_type(tab[f], 0, 0));
 	}
+}
+
+int		adds(size_t *i, t_type **head)
+{
+	t_cl	*tmp;
+	t_list  *list;
+	char    **tab;
+	char	*str;
+	list = NULL;
+	while ((g_data->line[(*i)] != '\'' && g_data->line[(*i)] != '"' && g_data->line[(*i)] != '|' && g_data->line[(*i)] != '>' && g_data->line[(*i)] != '<') && g_data->line[(*i)])
+	{
+		tmp = malloc(sizeof(t_cl));
+		tmp->c = g_data->line[(*i)];
+		ft_lstadd_back(&list, ft_lstnew(tmp));
+		(*i)++;
+	}
+	str = ll_to_string(list);
+	tab = ft_split(str, ' ');
+	function(head, tab, *i, 0);
+	// while (tab[l])
+	// 	l++;
+	// if (l == 1)
+	// {
+	// 	if (g_data->line[(*i)] == '\'' || g_data->line[(*i)] == '"')
+	// 		ft_lstadd_back_type(head,ft_lstnew_type(tab[0], 0, 1));
+	// 	else
+	// 		ft_lstadd_back_type(head,ft_lstnew_type(tab[0], 0, 0));
+	// }
+	// else
+	// {
+	// 	while (tab[f] && f < (l - 1))
+	// 	{
+	// 		ft_lstadd_back_type(head,ft_lstnew_type(tab[f], 0, 0));      
+	// 		f++;
+	// 	}
+	// 	if (g_data->line[(*i)] == '\'' || g_data->line[(*i)] == '"')
+	// 		ft_lstadd_back_type(head,ft_lstnew_type(tab[f], 0, 1));
+	// 	else
+	// 		ft_lstadd_back_type(head,ft_lstnew_type(tab[f], 0, 0));
+	// }
 	(*i)--;
 	return (1);
 }

@@ -4,7 +4,6 @@ void    log_error(char *s, int i)
 {
     i = 0;
     ft_putstr(s);
-    // exit(125);
 }
 
 void    check_words(t_type *tmp)
@@ -78,56 +77,4 @@ void	ft_lstadd_back_type(t_type **alst, t_type *new)
         last->next  = new;
         new->prev = last;
     }
-}
-
-
-int     real_character(char *line, int i, char c)
-{
-    int cnt;
-    int ret;
-
-    cnt = 0;
-    ret = 0;
-
-    if (line[i] == c)
-    {
-        if (i == 0)
-            return (1);
-        i--;
-        if (line[i] ==  '\\')
-        {
-            while (line[i--] ==  '\\')
-                cnt++;
-            if (cnt % 2 == 0)
-                return (1);
-        }
-        else
-            return (1);
-    }
-    return (0);
-}
-
-int     real_character1(char *line, int i, char c)
-{
-    int cnt;
-    int ret;
-
-    cnt = 0;
-    ret = 0;
-
-    if (line[i] == c)
-    {
-        if (i == 0)
-            return (0);
-        i--;
-        if (line[i] ==  '\\')
-        {
-            while (line[i--] ==  '\\')
-                cnt++;
-            return (cnt);
-        }
-        else
-            return (0);
-    }
-    return (0);
 }

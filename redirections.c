@@ -6,7 +6,7 @@
 /*   By: mamali <mamali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 00:53:44 by macbookpro        #+#    #+#             */
-/*   Updated: 2021/10/25 20:13:57 by mamali           ###   ########.fr       */
+/*   Updated: 2021/10/25 21:45:47 by mamali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,4 +114,55 @@
 // 	while (cnt--)
 // 		ft_lstadd_back(head, ft_lstnew(tmp));
 // 	return (1);
+// }
+
+// int     real_character(char *line, int i, char c)
+// {
+//     int cnt;
+//     int ret;
+
+//     cnt = 0;
+//     ret = 0;
+
+//     if (line[i] == c)
+//     {
+//         if (i == 0)
+//             return (1);
+//         i--;
+//         if (line[i] ==  '\\')
+//         {
+//             while (line[i--] ==  '\\')
+//                 cnt++;
+//             if (cnt % 2 == 0)
+//                 return (1);
+//         }
+//         else
+//             return (1);
+//     }
+//     return (0);
+// }
+
+// int     real_character1(char *line, int i, char c)
+// {
+//     int cnt;
+//     int ret;
+
+//     cnt = 0;
+//     ret = 0;
+
+//     if (line[i] == c)
+//     {
+//         if (i == 0)
+//             return (0);
+//         i--;
+//         if (line[i] ==  '\\')
+//         {
+//             while (line[i--] ==  '\\')
+//                 cnt++;
+//             return (cnt);
+//         }
+//         else
+//             return (0);
+//     }
+//     return (0);
 // }
