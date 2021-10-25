@@ -135,8 +135,9 @@ void	expand_cmdlist(void)
 	while (tmp)
 	{
 		tmp2 = tmp->content;
+		print_types(tmp2);
 		expanded_types = expander(tmp->content);
-		// print_types(expanded_types);
+		print_types(expanded_types);
 		cmd = malloc(sizeof(t_cmd));
 		if (i == 0)
 		{

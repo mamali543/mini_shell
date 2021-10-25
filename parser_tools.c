@@ -131,6 +131,7 @@ int		adds(size_t *i, t_type **head)
 		ft_lstadd_back(&list, ft_lstnew(tmp));
 		(*i)++;
 	}
+	printf("c is = %c\n", g_data->line[(*i)]);
 	str = ll_to_string(list);
 	// ft_lstadd_back_type(head,ft_lstnew_type(str, 0));
 	tab = ft_split(str, ' ');
@@ -151,9 +152,7 @@ int		adds(size_t *i, t_type **head)
 			f++;
 		}
 		if (g_data->line[(*i)] == '\'' || g_data->line[(*i)] == '"')
-		{
 			ft_lstadd_back_type(head,ft_lstnew_type(tab[f], 0, 1));
-		}
 		else
 			ft_lstadd_back_type(head,ft_lstnew_type(tab[f], 0, 0));
 	}

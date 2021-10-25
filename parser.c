@@ -3,20 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
+/*   By: mamali <mamali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/24 12:48:20 by mamali            #+#    #+#             */
-/*   Updated: 2021/10/25 02:40:04 by macbookpro       ###   ########.fr       */
+/*   Updated: 2021/10/25 12:47:14 by mamali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_type	*function(int dblq, int single, size_t i)
-{
-	t_type	*type;
+// echo $"$'hf$PWD'gh"hfh
 
-	type = NULL;
+t_type	*function(t_type *type, int dblq, int single, size_t i)
+{
 	while (1)
 	{
 		if (g_data->line[i] == '\'' && single == 0 && dblq == 0)
@@ -38,22 +37,24 @@ t_type	*function(int dblq, int single, size_t i)
 			add_in(&i, '<', &type);
 		else if (g_data->line[i] != ' ')
 			adds(&i, &type);
-		if (i >= ft_strlen(g_data->line) - 1)
+		if (i++ >= ft_strlen(g_data->line) - 1)
 			break;
-		i++;
 	}
 	return (type);
 }
 
 t_type	*parser()
 {
+	t_type	*type;
 	t_type	*tmp;
 
-	tmp = function(0, 0, 0);
+	type = NULL;
+	tmp = function(type, 0, 0, 0);
 	if (tmp)
 	{
 		ft_lstadd_back(&g_data->tokkens, ft_lstnew(tmp));
 		tmp = NULL;
 	}
+	// print_types(tmp);
 	return (tmp);
 }

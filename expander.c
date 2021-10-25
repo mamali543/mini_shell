@@ -49,7 +49,6 @@ void		to_skip(char *s, size_t *a, t_list **head, int f)
 		(*a)++;
 	}
 	key = ll_to_string(list_keys);
-	printf("kay = %s\n", key);
 	key = return_env_value(key);
 	add_string(head, key);
 	(*a)--;
