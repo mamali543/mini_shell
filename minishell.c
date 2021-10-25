@@ -3,21 +3,16 @@
 t_list	*get_args(t_list **args ,t_type	*types)
 {
 	t_type	*tmp;
-	t_type	*tmp1;
 	t_type	*prev;
 	t_list	*list_files;
 	
 	tmp = types;
 	list_files = NULL;
-				// print_types(tmp);
 	while (tmp)
 	{
 		prev = tmp->prev;
 		if (tmp->type == 4)
-		{
-			tmp1 = tmp;
-			ft_lstadd_back(&list_files, ft_lstnew(tmp1->next->word));
-		}
+			ft_lstadd_back(&list_files, ft_lstnew(tmp->next->word));
 		if (tmp->type != 4)
 		{
 			if (tmp->prev != NULL)
@@ -56,15 +51,23 @@ t_list	*get_args(t_list **args ,t_type	*types)
 void	get_out(int *i, t_list *list_files)
 {
 	char	*s;
-
+	size_t	a;
+	size_t	j;
 	if (list_files)
 	{
 		s = ft_lstlast(list_files)->content;
 		printf("file out = %s\n", s);
+		a = ft_strlen(list_files->content);
+		j = ft_strlen(s);
+		printf("%zu :: %zu\n", a, j);
+		// printf("before loup : %zu\n :: %zu\n", a, j);
 		*i = open(s, O_WRONLY | O_CREAT | O_TRUNC , 0777);
-		while (ft_strcmp(s, list_files->content) != 0)
+		while (list_files)
 		{
-			open(list_files->content, O_WRONLY | O_CREAT | O_TRUNC , 0777);
+			if (ft_strcmp(s, list_files->content) != 0 || a != j)
+				open(list_files->content, O_WRONLY | O_CREAT | O_TRUNC , 0777);
+			if (list_files->next)
+				a = ft_strlen(list_files->next->content);
 			list_files = list_files->next;
 		}
 	}
@@ -119,68 +122,6 @@ t_type	*get_node(t_type *types)
 	return (tmp);
 }
 // > file echo sdsd > file2
-// echo "$PATH"dfgd
-void	expand_cmdlist(void)
-{
-	t_list *tmp;
-	t_cmd *cmd;
-	t_type *expanded_types;
-	t_list	*list_files;
-	int		i;
-	t_type	*tmp2;
-	char	*str;
-
-	tmp = g_data->tokkens;
-	i = 0;
-	while (tmp)
-	{
-		tmp2 = tmp->content;
-		print_types(tmp2);
-		expanded_types = expander(tmp->content);
-		print_types(expanded_types);
-		cmd = malloc(sizeof(t_cmd));
-		if (i == 0)
-		{
-			printf("type : %d\n", tmp2->type);
-			if (tmp2->type == 4)
-			{
-				// print_types(tmp2);
-				if (ft_lstsize_type(tmp2) == 3)
-				{
-					str = get_node(tmp2)->word;
-					cmd->cmd = get_cmd_path(str, g_data->env);
-				}
-				else if (ft_lstsize_type(tmp2) == 4)
-				{
-					str = ft_lstlast_type(tmp2)->word;
-					if (str[i] == '-' || !ft_strcmp(get_node(tmp2)->word, "echo"))
-						str = get_node(tmp2)->word;
-					else
-						str = ft_lstlast_type(tmp2)->word;
-					cmd->cmd = get_cmd_path(str, g_data->env);
-				}
-				else
-				{
-					str = get_node(tmp2)->word;
-					cmd->cmd = get_cmd_path(str, g_data->env);
-				}
-			}
-			else if (tmp2->type == 0)
-				cmd->cmd = get_cmd_path(expanded_types->word, g_data->env);
-		}
-		else
-			cmd->cmd = get_cmd_path(expanded_types->word, g_data->env);
-		cmd->args_list = NULL;
-		list_files = get_args(&(cmd->args_list), expanded_types);
-		get_out(&(cmd->out), list_files);
-		cmd->in = 1;
-		ft_lstadd_back(&g_data->cmd_list, ft_lstnew(cmd));
-		tmp = tmp->next;
-		i++;
-		printf("--------------------\n");
-	}
-}
-
 char	*make_string(char *str, char c)
 {
 	size_t		i;
@@ -222,14 +163,63 @@ char	**ll_to_dp(t_list *list)
 	str[i] = 0;
 	return (str);
 }
+// echo "$PATH"dfgd
+void	first_round(t_type *tmp2, char *str, t_cmd **cmd, t_type **expanded_types)
+{
+	if (tmp2->type == 4)
+	{
+		if (ft_lstsize_type(tmp2) == 3)
+		{
+			str = get_node(tmp2)->word;
+			(*cmd)->cmd = get_cmd_path(str, g_data->env);
+		}
+		else
+		{
+			str = get_node(tmp2)->word;
+			(*cmd)->cmd = get_cmd_path(str, g_data->env);
+		}
+	}
+	else if (tmp2->type == 0)
+		(*cmd)->cmd = get_cmd_path((*expanded_types)->word, g_data->env);
+}
+
+void	expand_cmdlist(int i, t_list *tmp, char *str)
+{
+	t_cmd	*cmd;
+	t_type	*expanded_types;
+	t_list	*list_files;
+	t_type	*tmp2;
+
+	while (tmp)
+	{
+		tmp2 = tmp->content;
+		expanded_types = expander(tmp->content);
+		cmd = malloc(sizeof(t_cmd));
+		if (i++ == 0)
+			first_round(tmp2, str, &cmd, &expanded_types);
+		else
+			cmd->cmd = get_cmd_path(expanded_types->word, g_data->env);
+		cmd->args_list = NULL;
+		list_files = get_args(&(cmd->args_list), expanded_types);
+		get_out(&(cmd->out), list_files);
+		cmd->in = 1;
+		ft_lstadd_back(&g_data->cmd_list, ft_lstnew(cmd));
+		tmp = tmp->next;
+		printf("--------------------\n");
+	}
+}
+
 
 int		main(int argc, char **argv, char **env)
 {
+	t_list *tmp;
+	char *str;
 
 	g_data = malloc(sizeof(t_data));
 	init_env_list(env);
 	argc = 0;
 	argv = NULL;
+	str = NULL;
 	while (1)
 	{
 		g_data->tokkens = NULL;
@@ -237,9 +227,8 @@ int		main(int argc, char **argv, char **env)
 		if (!(g_data->line = readline("ader🤡$>")))
 	    	return (1);
 		parser();
-		// printf("hey\n");
-		// print_types(g_data->tokkens->content);
-		expand_cmdlist();
+		tmp = g_data->tokkens;
+		expand_cmdlist(0, tmp, str);
 		print_cmd();
 		// excute_cmd();
 		print_tokkens();

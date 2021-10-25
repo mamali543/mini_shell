@@ -83,7 +83,7 @@ void	excute_cmd(void);
 //
 char	**ll_to_dp(t_list *list);
 
-void	expand_cmdlist(void);
+void	expand_cmdlist(int i, t_list *tmp, char *str);
 void    create_file(char *s, t_cmd *cmd);
 char 	*ll_to_string(t_list *head);
 void	init_env_list(char **evnp);
@@ -103,7 +103,7 @@ int    	check_if_sq(char *str, int *j);
 void    help_q(t_list **head, char c);
 void    parser2(t_list *cmd_list);
 void	print_cmdlist(t_list *listcmd);
-t_type	*parser();
+void	parser(void);
 void	print_types(t_type *type);
 void	free_nodes_types(t_type	**tmp);
 void	add_tab_to_ll(t_type **head, char *str, int type, int a);

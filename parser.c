@@ -6,7 +6,7 @@
 /*   By: mamali <mamali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/24 12:48:20 by mamali            #+#    #+#             */
-/*   Updated: 2021/10/25 12:47:14 by mamali           ###   ########.fr       */
+/*   Updated: 2021/10/25 13:48:00 by mamali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_type	*function(t_type *type, int dblq, int single, size_t i)
 	return (type);
 }
 
-t_type	*parser()
+void	parser(void)
 {
 	t_type	*type;
 	t_type	*tmp;
@@ -55,6 +55,4 @@ t_type	*parser()
 		ft_lstadd_back(&g_data->tokkens, ft_lstnew(tmp));
 		tmp = NULL;
 	}
-	// print_types(tmp);
-	return (tmp);
 }
