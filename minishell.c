@@ -224,7 +224,6 @@ char	**ll_to_dp(t_list *list)
 
 int		main(int argc, char **argv, char **env)
 {
-	char	*line;
 
 	g_data = malloc(sizeof(t_data));
 	init_env_list(env);
@@ -234,15 +233,16 @@ int		main(int argc, char **argv, char **env)
 	{
 		g_data->tokkens = NULL;
 		g_data->cmd_list = NULL;
-		if (!(line = readline("ader🤡$>")))
+		if (!(g_data->line = readline("ader🤡$>")))
 	    	return (1);
-		parser(line, 0, 0);
+		parser();
+		// printf("hey\n");
 		// print_types(g_data->tokkens->content);
 		expand_cmdlist();
 		print_cmd();
 		// excute_cmd();
 		print_tokkens();
-		add_history(line);
+		add_history(g_data->line);
 		// check_words(tmp);
 	}
 	return (0);

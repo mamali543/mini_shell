@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	add_in(char *line, size_t *i, char c, t_type **head)
+void	add_in(size_t *i, char c, t_type **head)
 {
 	t_cl	*tmp;
 	t_list  *list;
@@ -8,10 +8,10 @@ void	add_in(char *line, size_t *i, char c, t_type **head)
 	size_t	k;
 
 	list = NULL;
-	while (line[(*i)] == c && line[(*i)])
+	while (g_data->line[(*i)] == c && g_data->line[(*i)])
 	{
 		tmp = malloc(sizeof(t_cl));
-		tmp->c = line[(*i)];
+		tmp->c = g_data->line[(*i)];
 		ft_lstadd_back(&list, ft_lstnew(tmp));
 		(*i)++;
 	}
@@ -28,7 +28,7 @@ void	add_in(char *line, size_t *i, char c, t_type **head)
 		exit(1);
 	}
 }
-void	add_out(char *line, size_t *i, char c, t_type **head)
+void	add_out(size_t *i, char c, t_type **head)
 {
 	t_cl	*tmp;
 	t_list  *list;
@@ -36,10 +36,10 @@ void	add_out(char *line, size_t *i, char c, t_type **head)
 	size_t	k;
 
 	list = NULL;
-	while (line[(*i)] == c && line[(*i)])
+	while (g_data->line[(*i)] == c && g_data->line[(*i)])
 	{
 		tmp = malloc(sizeof(t_cl));
-		tmp->c = line[(*i)];
+		tmp->c = g_data->line[(*i)];
 		ft_lstadd_back(&list, ft_lstnew(tmp));
 		(*i)++;
 	}
@@ -62,34 +62,34 @@ void	add_out(char *line, size_t *i, char c, t_type **head)
  then i convert the list to a string, finally i add the string to a list of type t_type that
  contains the string and his type. */
 
-t_list	*fill_list(char *line, size_t *i, char c)
+t_list	*fill_list(size_t *i, char c)
 {
 	t_cl	*tmp;
 	t_list  *list;
 
 	list = NULL;
-	while (line[(*i)] != c && line[(*i)])
+	while (g_data->line[(*i)] != c && g_data->line[(*i)])
 	{
 		tmp = malloc(sizeof(t_cl));
-		tmp->c = line[(*i)];
+		tmp->c = g_data->line[(*i)];
 		ft_lstadd_back(&list, ft_lstnew(tmp));
 		(*i)++;
 	}
 	return (list);
 }
 
-int	add_sq(char *line, size_t *i, char c, t_type **head)
+int	add_sq(size_t *i, char c, t_type **head)
 {
 	t_list  *list;
 	char 	*str;
 
 	(*i)++;
-	list = fill_list(line, i, c);
+	list = fill_list(i, c);
 	str = ll_to_string(list);
 	if (c == '\'')
 	{
 		(*i)++;
-		if (line[(*i)] == ' ' || !line[(*i)])
+		if (g_data->line[(*i)] == ' ' || !g_data->line[(*i)])
 			ft_lstadd_back_type(head,ft_lstnew_type(str, 1, 0));
 		else
 			ft_lstadd_back_type(head,ft_lstnew_type(str, 1, 1));
@@ -97,7 +97,7 @@ int	add_sq(char *line, size_t *i, char c, t_type **head)
 	else
 	{
 		(*i)++;
-		if (line[(*i)] == ' ' || !line[(*i)])
+		if (g_data->line[(*i)] == ' ' || !g_data->line[(*i)])
 			ft_lstadd_back_type(head,ft_lstnew_type(str, 2, 0));
 		else
 			ft_lstadd_back_type(head,ft_lstnew_type(str, 2, 1));
@@ -112,7 +112,7 @@ int	add_sq(char *line, size_t *i, char c, t_type **head)
  then i convert the list to a string, finally i add the string to a list of type t_type that
  contains the string and his type.*/
 
-int		adds(char *line, size_t *i, t_type **head)
+int		adds(size_t *i, t_type **head)
 {
 	t_cl	*tmp;
 	t_list  *list;
@@ -124,10 +124,10 @@ int		adds(char *line, size_t *i, t_type **head)
 	l  = 0;
 	f = 0;
 	list = NULL;
-	while ((line[(*i)] != '\'' && line[(*i)] != '"' && line[(*i)] != '|' && line[(*i)] != '>' && line[(*i)] != '<') && line[(*i)])
+	while ((g_data->line[(*i)] != '\'' && g_data->line[(*i)] != '"' && g_data->line[(*i)] != '|' && g_data->line[(*i)] != '>' && g_data->line[(*i)] != '<') && g_data->line[(*i)])
 	{
 		tmp = malloc(sizeof(t_cl));
-		tmp->c = line[(*i)];
+		tmp->c = g_data->line[(*i)];
 		ft_lstadd_back(&list, ft_lstnew(tmp));
 		(*i)++;
 	}
@@ -138,7 +138,7 @@ int		adds(char *line, size_t *i, t_type **head)
 		l++;
 	if (l == 1)
 	{
-		if (line[(*i)] == '\'' || line[(*i)] == '"')
+		if (g_data->line[(*i)] == '\'' || g_data->line[(*i)] == '"')
 			ft_lstadd_back_type(head,ft_lstnew_type(tab[0], 0, 1));
 		else
 			ft_lstadd_back_type(head,ft_lstnew_type(tab[0], 0, 0));
@@ -150,7 +150,7 @@ int		adds(char *line, size_t *i, t_type **head)
 			ft_lstadd_back_type(head,ft_lstnew_type(tab[f], 0, 0));      
 			f++;
 		}
-		if (line[(*i)] == '\'' || line[(*i)] == '"')
+		if (g_data->line[(*i)] == '\'' || g_data->line[(*i)] == '"')
 		{
 			ft_lstadd_back_type(head,ft_lstnew_type(tab[f], 0, 1));
 		}

@@ -71,6 +71,7 @@ typedef struct s_data
 	t_list 	*env;
 	t_list	*cmd_list;
 	t_list	*tokkens;
+	char	*line;
 
 }				t_data;
 
@@ -96,13 +97,13 @@ char	*make_string(char *str, char c);
 int     real_character1(char *line, int i, char c);
 char	*return_env_value(char *key);
 void	add_string(t_list **head, char *str);
-int		add_sq(char *line, size_t *i, char c, t_type **head);
-int		adds(char *line, size_t *i, t_type **head);
+int		add_sq(size_t *i, char c, t_type **head);
+int		adds(size_t *i, t_type **head);
 int    	check_if_sq(char *str, int *j);
 void    help_q(t_list **head, char c);
 void    parser2(t_list *cmd_list);
 void	print_cmdlist(t_list *listcmd);
-t_type	*parser(char	*line, int dblq, int single);
+t_type	*parser();
 void	print_types(t_type *type);
 void	free_nodes_types(t_type	**tmp);
 void	add_tab_to_ll(t_type **head, char *str, int type, int a);
@@ -110,7 +111,6 @@ void	print_cmd(void);
 void	print_tokkens(void);
 char	*get_cmd_path(char *str, t_list *env);
 char	*my_ft_strjoin(char const *s1, char const *s2);
-void	add_out(char *line, size_t *i, char c, t_type **head);
-void	add_in(char *line, size_t *i, char c, t_type **head);
-t_type	*parser(char	*line, int dblq, int single);
+void	add_out(size_t *i, char c, t_type **head);
+void	add_in(size_t *i, char c, t_type **head);
 #endif
