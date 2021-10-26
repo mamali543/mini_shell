@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_functions.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamali <mamali@student.42.fr>              +#+  +:+       +#+        */
+/*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 16:13:55 by mamali            #+#    #+#             */
-/*   Updated: 2021/10/23 13:55:22 by mamali           ###   ########.fr       */
+/*   Updated: 2021/10/26 00:34:02 by macbookpro       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,34 @@ void	print_cmd(void)
 		printf("out is : %d\n", tmp2->out);
 		printf("*****************************\n");
 		tmp = tmp->next;
+	}
+}
+
+void	printlist(t_list *env)
+{
+	t_list		*lst;
+	t_env		*env_l;
+
+	lst = env;
+	while (lst)
+	{
+		env_l = lst->content;
+		printf("%s=%s\n", env_l->name, env_l->content);
+		lst = lst->next;
+	}
+}
+
+void	printlist_cl(t_list *env)
+{
+	t_list		*lst;
+	t_cl		*env_l;
+
+	lst = env;
+	while (lst)
+	{
+		env_l = lst->content;
+		printf("| %c |\n", env_l->c);
+		lst = lst->next;
 	}
 }
 

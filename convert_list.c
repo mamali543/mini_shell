@@ -20,3 +20,21 @@ char *ll_to_string(t_list *head)
     return (str);
 }
 
+char	**ll_to_dp(t_list *list)
+{
+	int		len;
+	int		i;
+	char	**str;
+
+	len =  ft_lstsize(list);
+	str = malloc(sizeof(char *)  * (len + 1));
+	i = 0;
+	while (list)
+	{
+		str[i] = ft_strdup(list->content);
+		i++;
+		list = list->next;
+	}
+	str[i] = 0;
+	return (str);
+}

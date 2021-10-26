@@ -82,7 +82,6 @@ void	excute_cmd(void);
 
 //
 char	**ll_to_dp(t_list *list);
-
 void	expand_cmdlist(int i, t_list *tmp, char *str);
 void    create_file(char *s, t_cmd *cmd);
 char 	*ll_to_string(t_list *head);
@@ -113,4 +112,12 @@ char	*get_cmd_path(char *str, t_list *env);
 char	*my_ft_strjoin(char const *s1, char const *s2);
 void	add_out(size_t *i, char c, t_type **head);
 void	add_in(size_t *i, char c, t_type **head);
+t_type	*get_cmd(t_type *type);
+t_type	*get_node(t_type *types);
+void	help_args(t_type *tmp, t_list **args);
+int		ft_lstsize_type(t_type *type);
+t_type	*ft_lstlast_type(t_type *type);
+t_type	*ft_lstnew_type2(char *content, int i, int a);
+void	add_tab_to_ll(t_type **head, char *str, int type, int a);
+t_list	*fill_list(size_t *i, char c);
 #endif
