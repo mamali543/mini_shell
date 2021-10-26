@@ -18,12 +18,18 @@ t_list	*get_args(t_list **args ,t_type	*types)
 			if (tmp->prev != NULL)
 			{
 				if (tmp->prev->type != 4)
-					help_args(tmp, args);
+					help_args(&tmp, args);
 			}
 			else
 				ft_lstadd_back(args, ft_lstnew(tmp->word));
 		}
 		tmp = tmp->next;
+	}
+	t_list *list = *args;
+	while (list)
+	{
+		printf("tt = %s\n", (char *)(list)->content);
+		list = (list)->next;
 	}
 	return (list_files);
 }
@@ -54,6 +60,9 @@ void	get_out(int *i, t_list *list_files)
 // echo "$PATH"dfgd
 void	first_round(t_type *tmp2, char *str, t_cmd **cmd, t_type **expanded_types)
 {
+	t_type	*tmp;
+
+	tmp = tmp2;
 	if (tmp2->type == 4)
 	{
 		if (ft_lstsize_type(tmp2) == 3)
@@ -63,8 +72,9 @@ void	first_round(t_type *tmp2, char *str, t_cmd **cmd, t_type **expanded_types)
 		}
 		else
 		{
-			str = get_node(tmp2)->word;
-			(*cmd)->cmd = get_cmd_path(str, g_data->env);
+			while(tmp->type == 4)
+				tmp = tmp->next->next;
+			(*cmd)->cmd = get_cmd_path(tmp->word, g_data->env);
 		}
 	}
 	else if (tmp2->type == 0)

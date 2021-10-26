@@ -6,33 +6,33 @@
 /*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 00:23:27 by macbookpro        #+#    #+#             */
-/*   Updated: 2021/10/26 00:37:16 by macbookpro       ###   ########.fr       */
+/*   Updated: 2021/10/26 04:48:21 by macbookpro       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	help_args(t_type *tmp, t_list **args)
+void	help_args(t_type **tmp, t_list **args)
 {
 	char	*str;
 	int		i;
 
 	i = 0;
-	if (tmp->a == 1)
+	if ((*tmp)->a == 1)
 	{
-		while (tmp->a == 1)
+		while ((*tmp)->a == 1)
 		{
 			if (i == 0)
-				str = ft_strjoin(tmp->word, tmp->next->word);
+				str = ft_strjoin((*tmp)->word, (*tmp)->next->word);
 			else
-				str = ft_strjoin(str, tmp->next->word);
+				str = ft_strjoin(str, (*tmp)->next->word);
 			i++;
-			tmp = tmp->next;
+			(*tmp) = (*tmp)->next;
 		}
 		ft_lstadd_back(args, ft_lstnew(str));
 	}
 	else
-		ft_lstadd_back(args, ft_lstnew(tmp->word));
+		ft_lstadd_back(args, ft_lstnew((*tmp)->word));
 }
 
 t_type	*get_cmd(t_type *type)

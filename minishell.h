@@ -114,7 +114,7 @@ void	add_out(size_t *i, char c, t_type **head);
 void	add_in(size_t *i, char c, t_type **head);
 t_type	*get_cmd(t_type *type);
 t_type	*get_node(t_type *types);
-void	help_args(t_type *tmp, t_list **args);
+void	help_args(t_type **tmp, t_list **args);
 int		ft_lstsize_type(t_type *type);
 t_type	*ft_lstlast_type(t_type *type);
 t_type	*ft_lstnew_type2(char *content, int i, int a);

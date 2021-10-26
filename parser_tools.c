@@ -113,10 +113,12 @@ void	ffunction(t_type **head, char **tab, size_t i, int f)
 	{
 		while (tab[f] && f < (l - 1))
 		{
+			printf("tab[f]%s\n", tab[f]);
 			ft_lstadd_back_type(head,ft_lstnew_type(tab[f], 0, 0));      
 			f++;
 		}
-		if (g_data->line[i] == '\'' || g_data->line[i] == '"')
+		printf("line de i :%c\n", g_data->line[i - 1]);
+		if ((g_data->line[i] == '\'' || g_data->line[i] == '"') && g_data->line[i - 1] != ' ')
 			ft_lstadd_back_type(head,ft_lstnew_type(tab[f], 0, 1));
 		else
 			ft_lstadd_back_type(head,ft_lstnew_type(tab[f], 0, 0));
