@@ -5,7 +5,7 @@ t_list	*get_args(t_list **args ,t_type	*types)
 	t_type	*tmp;
 	t_type	*prev;
 	t_list	*list_files;
-	
+
 	tmp = types;
 	list_files = NULL;
 	while (tmp)
@@ -70,7 +70,9 @@ void	first_round(t_type *tmp2, char *str, t_cmd **cmd, t_type **expanded_types)
 	tmp = tmp2;
 	if (tmp2->type == 4 || tmp2->type == 3)
 	{
-		if (ft_lstsize_type(tmp2) == 3)
+		if (ft_lstsize_type(tmp2) == 2)
+			(*cmd)->cmd = ft_strdup("");
+		else if (ft_lstsize_type(tmp2) == 3)
 		{
 			str = get_node(tmp2)->word;
 			(*cmd)->cmd = get_cmd_path(str, g_data->env);
@@ -128,6 +130,7 @@ int		main(int argc, char **argv, char **env)
 		g_data->cmd_list = NULL;
 		if (!(g_data->line = readline("ader🤡$>")))
 	    	return (1);
+		syntax_error();
 		parser();
 		tmp = g_data->tokkens;
 		expand_cmdlist(0, tmp, str);
@@ -139,5 +142,3 @@ int		main(int argc, char **argv, char **env)
 	}
 	return (0);
 }
-
-
