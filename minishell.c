@@ -63,7 +63,7 @@ void	get_out(int *i, t_list *list_files, t_type *expanded_types)
 }
 // > file echo sdsd > file2
 // echo "$PATH"dfgd
-void	first_round(t_type *tmp2, char *str, t_cmd **cmd, t_type **expanded_types)
+void	get_command(t_type *tmp2, char *str, t_cmd **cmd, t_type **expanded_types)
 {
 	t_type	*tmp;
 
@@ -88,7 +88,7 @@ void	first_round(t_type *tmp2, char *str, t_cmd **cmd, t_type **expanded_types)
 		(*cmd)->cmd = get_cmd_path((*expanded_types)->word, g_data->env);
 }
 
-void	expand_cmdlist(int i, t_list *tmp, char *str)
+void	expand_cmdlist(t_list *tmp, char *str)
 {
 	t_cmd	*cmd;
 	t_type	*expanded_types;
@@ -100,10 +100,7 @@ void	expand_cmdlist(int i, t_list *tmp, char *str)
 		tmp2 = tmp->content;
 		expanded_types = expander(tmp->content);
 		cmd = malloc(sizeof(t_cmd));
-		if (i++ == 0)
-			first_round(tmp2, str, &cmd, &expanded_types);
-		else
-			cmd->cmd = get_cmd_path(expanded_types->word, g_data->env);
+		get_command(tmp2, str, &cmd, &expanded_types);
 		cmd->args_list = NULL;
 		list_files = get_args(&(cmd->args_list), expanded_types);
 		get_out(&(cmd->out), list_files, expanded_types);
@@ -133,7 +130,7 @@ int		main(int argc, char **argv, char **env)
 		syntax_error();
 		parser();
 		tmp = g_data->tokkens;
-		expand_cmdlist(0, tmp, str);
+		expand_cmdlist(tmp, str);
 		print_cmd();
 		// excute_cmd();
 		print_tokkens();
