@@ -50,7 +50,10 @@ static void	to_skip(char *s, size_t *a, t_list **head, size_t i)
 			add_to_lk(s, (*a)++, tmp, &list_keys);
 	key = ll_to_string(list_keys);
 	key = return_env_value(key);
+
 	add_string(head, key);
+			// 	t_cl *t = (*head)->content;
+			// printf("%chgh\n", t->c);
 	(*a)--;
 }
 // ila kan khasso yt2expanda kanb6a n2ajouter f les charactres f wahd list
@@ -67,6 +70,7 @@ static void	expand_word(char *str, t_list **head, int a, size_t i)
 		{
 			f = i;
 			to_skip(str , &i, head, f);
+
 		}
 		else if (str[i] == ' ' && a == 0)
 		{
@@ -100,11 +104,15 @@ t_type	*expander(t_type *tmp)
 		else
 			add_string(&head, tmp2->word);
 		str = ll_to_string(head);
+    printf("red : %s\n", str);
+
+		
 		if (tmp2->type == 0)
 			add_tab_to_ll(&new, str, tmp2->type, tmp2->a);
 		else
  			ft_lstadd_back_type(&new, ft_lstnew_type2(str, tmp2->type, tmp2->a));
         tmp2 = tmp2->next;
     }
+
     return (new);
 }

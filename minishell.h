@@ -82,7 +82,7 @@ void	excute_cmd(void);
 
 //
 char	**ll_to_dp(t_list *list);
-void	expand_cmdlist(int i, t_list *tmp, char *str);
+void	expand_cmdlist(t_list *tmp, char *str);
 void    create_file(char *s, t_cmd *cmd);
 char 	*ll_to_string(t_list *head);
 void	init_env_list(char **evnp);
@@ -120,4 +120,6 @@ t_type	*ft_lstlast_type(t_type *type);
 t_type	*ft_lstnew_type2(char *content, int i, int a);
 void	add_tab_to_ll(t_type **head, char *str, int type, int a);
 t_list	*fill_list(size_t *i, char c);
+void    log_error(char *s);
+void    syntax_error();
 #endif

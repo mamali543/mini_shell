@@ -5,7 +5,7 @@ t_list	*get_args(t_list **args ,t_type	*types)
 	t_type	*tmp;
 	t_type	*prev;
 	t_list	*list_files;
-	
+
 	tmp = types;
 	list_files = NULL;
 	while (tmp)
@@ -63,14 +63,16 @@ void	get_out(int *i, t_list *list_files, t_type *expanded_types)
 }
 // > file echo sdsd > file2
 // echo "$PATH"dfgd
-void	first_round(t_type *tmp2, char *str, t_cmd **cmd, t_type **expanded_types)
+void	get_command(t_type *tmp2, char *str, t_cmd **cmd, t_type **expanded_types)
 {
 	t_type	*tmp;
 
 	tmp = tmp2;
 	if (tmp2->type == 4 || tmp2->type == 3)
 	{
-		if (ft_lstsize_type(tmp2) == 3)
+		if (ft_lstsize_type(tmp2) == 2)
+			(*cmd)->cmd = ft_strdup("");
+		else if (ft_lstsize_type(tmp2) == 3)
 		{
 			str = get_node(tmp2)->word;
 			(*cmd)->cmd = get_cmd_path(str, g_data->env);
@@ -86,7 +88,7 @@ void	first_round(t_type *tmp2, char *str, t_cmd **cmd, t_type **expanded_types)
 		(*cmd)->cmd = get_cmd_path((*expanded_types)->word, g_data->env);
 }
 
-void	expand_cmdlist(int i, t_list *tmp, char *str)
+void	expand_cmdlist(t_list *tmp, char *str)
 {
 	t_cmd	*cmd;
 	t_type	*expanded_types;
@@ -98,10 +100,7 @@ void	expand_cmdlist(int i, t_list *tmp, char *str)
 		tmp2 = tmp->content;
 		expanded_types = expander(tmp->content);
 		cmd = malloc(sizeof(t_cmd));
-		if (i++ == 0)
-			first_round(tmp2, str, &cmd, &expanded_types);
-		else
-			cmd->cmd = get_cmd_path(expanded_types->word, g_data->env);
+		get_command(tmp2, str, &cmd, &expanded_types);
 		cmd->args_list = NULL;
 		list_files = get_args(&(cmd->args_list), expanded_types);
 		get_out(&(cmd->out), list_files, expanded_types);
@@ -128,9 +127,10 @@ int		main(int argc, char **argv, char **env)
 		g_data->cmd_list = NULL;
 		if (!(g_data->line = readline("ader🤡$>")))
 	    	return (1);
+		syntax_error();
 		parser();
 		tmp = g_data->tokkens;
-		expand_cmdlist(0, tmp, str);
+		expand_cmdlist(tmp, str);
 		print_cmd();
 		// excute_cmd();
 		print_tokkens();
@@ -139,5 +139,3 @@ int		main(int argc, char **argv, char **env)
 	}
 	return (0);
 }
-
-

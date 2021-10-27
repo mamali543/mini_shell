@@ -6,7 +6,7 @@
 /*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 00:34:36 by macbookpro        #+#    #+#             */
-/*   Updated: 2021/10/26 00:34:47 by macbookpro       ###   ########.fr       */
+/*   Updated: 2021/10/27 00:09:35 by macbookpro       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,16 @@ char	*get_absolute_path(char **path, char *str)
 	int		fd;
 	char	*cmd;
 
-	i = -1;
+	i = 0;
 	cmd = NULL;
-	while (path[++i])
+	while (path[i])
 	{
 		cmd = my_ft_strjoin(path[i], str);
 		fd = open(cmd, O_RDONLY);
 		if (fd > 0)
 			break ;
 		close(fd);
+		i++;
 	}
 	close(fd);
 	return (cmd);
@@ -80,7 +81,9 @@ char	*get_cmd_path(char *str, t_list *env)
 		env_tmp = env_tmp->next;
 	}
 	path = ft_split(cmd, ':');
+	printf("before %s\n", str);
 	str = get_absolute_path(path, str);
+	printf("after : %s\n", str);
 	free_dpointer(path);
 	return (str);
 }

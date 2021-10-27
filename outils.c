@@ -6,7 +6,7 @@
 /*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 00:19:25 by macbookpro        #+#    #+#             */
-/*   Updated: 2021/10/26 00:42:06 by macbookpro       ###   ########.fr       */
+/*   Updated: 2021/10/27 00:57:39 by macbookpro       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,12 @@ void	add_string(t_list **head, char *str)
 	int		i;
 
 	i = 0;
+	if (!str[i])
+	{
+		tmp = malloc(sizeof(t_cl));
+		tmp->c = '\0';
+		ft_lstadd_back(head, ft_lstnew(tmp));
+	}
 	while (str[i])
 	{
 		tmp = malloc(sizeof(t_cl));
@@ -55,6 +61,11 @@ void	add_tab_to_ll(t_type **head, char *str, int type, int a)
 	int	i;
 
 	i = 0;
+	if (!str[0])
+	{
+		ft_lstadd_back_type(head, ft_lstnew_type2(ft_strdup(""), type, a));
+		return ;
+	}
 	tab = ft_split(str, ' ');
 	while (tab[i])
 	{
