@@ -98,6 +98,7 @@ void	expand_cmdlist(t_list *tmp, char *str)
 	while (tmp)
 	{
 		tmp2 = tmp->content;
+		// printf("ici = %s|\n", tmp2->word);
 		expanded_types = expander(tmp->content);
 		cmd = malloc(sizeof(t_cmd));
 		get_command(tmp2, str, &cmd, &expanded_types);
@@ -127,6 +128,7 @@ int		main(int argc, char **argv, char **env)
 		g_data->cmd_list = NULL;
 		if (!(g_data->line = readline("ader🤡$>")))
 	    	return (1);
+		printf("heeeere :%s||\n", g_data->line);
 		syntax_error();
 		parser();
 		tmp = g_data->tokkens;

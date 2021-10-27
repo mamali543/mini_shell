@@ -62,6 +62,13 @@ static void	expand_word(char *str, t_list **head, int a, size_t i)
 {
 	t_cl	*tmp;
 	size_t	f;
+	if (!str[i])
+	{
+		tmp = malloc(sizeof(t_cl));
+		tmp->c = '\0';
+		ft_lstadd_back(head, ft_lstnew(tmp));
+		return ;
+	}
     while (1)
     {
 		tmp = malloc(sizeof(t_cl));
@@ -104,9 +111,6 @@ t_type	*expander(t_type *tmp)
 		else
 			add_string(&head, tmp2->word);
 		str = ll_to_string(head);
-    printf("red : %s\n", str);
-
-		
 		if (tmp2->type == 0)
 			add_tab_to_ll(&new, str, tmp2->type, tmp2->a);
 		else
