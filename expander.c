@@ -50,7 +50,6 @@ static void	to_skip(char *s, size_t *a, t_list **head, size_t i)
 			add_to_lk(s, (*a)++, tmp, &list_keys);
 	key = ll_to_string(list_keys);
 	key = return_env_value(key);
-
 	add_string(head, key);
 			// 	t_cl *t = (*head)->content;
 			// printf("%chgh\n", t->c);

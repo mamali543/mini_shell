@@ -11,13 +11,13 @@ t_list	*get_args(t_list **args ,t_type	*types)
 	while (tmp)
 	{
 		prev = tmp->prev;
-		if (tmp->type == 4 || tmp->type == 3)
+		if (tmp->type == 4 || tmp->type == 3 || tmp->type == 5 || tmp->type == 6)
 			ft_lstadd_back(&list_files, ft_lstnew(tmp->next->word));
-		if (tmp->type != 4 && tmp->type != 3)
+		if (tmp->type != 4 && tmp->type != 3 && tmp->type != 5 && tmp->type != 6)
 		{
 			if (tmp->prev != NULL)
 			{
-				if (tmp->prev->type != 4 && tmp->prev->type != 3)
+				if (tmp->prev->type != 4 && tmp->prev->type != 3 && tmp->prev->type != 5 && tmp->prev->type != 6)
 					help_args(&tmp, args);
 			}
 			else
@@ -34,29 +34,65 @@ t_list	*get_args(t_list **args ,t_type	*types)
 	return (list_files);
 }
 
+int	ft_heredoc(char *str)
+{
+	int		fd[2];
+	char	*line;
+	int		x;
+
+	x = 1;
+	pipe(fd);
+	while (x)
+	{
+		line = readline("");
+		x = strcmp(line, str);
+		if (!x)
+			break ;
+		else
+			write(fd[1], line, strlen(line));
+		free(line);
+		write(fd[1], "\n", 1);
+	}
+	if (line)
+		free(line);
+	close(fd[1]);
+	return (fd[0]);
+}
+
+void	get_in(int *i, t_list *list_files, t_type *expanded_types)
+{
+	if (list_files)
+	{
+		expanded_types = expanded_types->next;
+		while (expanded_types)
+		{
+			printf("file_out is = %s %d\n", expanded_types->word, expanded_types->type);
+			if (expanded_types->prev->type == 5)
+				*i = ft_heredoc(expanded_types->word);
+			else if (expanded_types->prev->type == 6)
+				*i = open(expanded_types->word, O_RDONLY);
+			expanded_types = expanded_types->next;
+		}
+	}
+}
+
 void	get_out(int *i, t_list *list_files, t_type *expanded_types)
 {
 	char	*s;
-	size_t	a;
-	size_t	j;
 	if (list_files)
 	{
 		s = ft_lstlast(list_files)->content;
-		printf("file_out is = %s\n", s);
-		a = ft_strlen(list_files->content);
-		j = ft_strlen(s);
+		// printf("file_out is = %s\n", s);
 		while (strcmp(expanded_types->word, s) != 0)
 			expanded_types = expanded_types->next;
 		if (expanded_types->prev->type == 4)
 			*i = open(s, O_WRONLY | O_CREAT | O_TRUNC , 0777);
-		else
+		else if (expanded_types->prev->type == 3)
 			*i = open(s, O_WRONLY | O_CREAT | O_APPEND , 0777);
 		while (list_files)
 		{
-			if (ft_strcmp(s, list_files->content) != 0 || a != j)
+			if (ft_strncmp(s, list_files->content, strlen(s) + 1) != 0)
 				open(list_files->content, O_WRONLY | O_CREAT | O_TRUNC , 0777);
-			if (list_files->next)
-				a = ft_strlen(list_files->next->content);
 			list_files = list_files->next;
 		}
 	}
@@ -105,7 +141,7 @@ void	expand_cmdlist(t_list *tmp, char *str)
 		cmd->args_list = NULL;
 		list_files = get_args(&(cmd->args_list), expanded_types);
 		get_out(&(cmd->out), list_files, expanded_types);
-		cmd->in = 1;
+		get_in(&(cmd->in), list_files, expanded_types);
 		ft_lstadd_back(&g_data->cmd_list, ft_lstnew(cmd));
 		tmp = tmp->next;
 		printf("--------------------\n");
