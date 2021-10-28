@@ -66,11 +66,17 @@ void	get_in(int *i, t_list *list_files, t_type *expanded_types)
 		expanded_types = expanded_types->next;
 		while (expanded_types)
 		{
-			printf("file_out is = %s %d\n", expanded_types->word, expanded_types->type);
+			// printf("file_out is = %s %d\n", expanded_types->word, expanded_types->type);
 			if (expanded_types->prev->type == 5)
+			{
+				printf("file_in %s\n", expanded_types->word);
 				*i = ft_heredoc(expanded_types->word);
+			}
 			else if (expanded_types->prev->type == 6)
+			{
+				printf("%s\n", expanded_types->word);
 				*i = open(expanded_types->word, O_RDONLY);
+			}	
 			expanded_types = expanded_types->next;
 		}
 	}
@@ -82,7 +88,7 @@ void	get_out(int *i, t_list *list_files, t_type *expanded_types)
 	if (list_files)
 	{
 		s = ft_lstlast(list_files)->content;
-		// printf("file_out is = %s\n", s);
+		printf("file_out is = %s\n", s);
 		while (strcmp(expanded_types->word, s) != 0)
 			expanded_types = expanded_types->next;
 		if (expanded_types->prev->type == 4)
@@ -104,7 +110,7 @@ void	get_command(t_type *tmp2, char *str, t_cmd **cmd, t_type **expanded_types)
 	t_type	*tmp;
 
 	tmp = tmp2;
-	if (tmp2->type == 4 || tmp2->type == 3)
+	if (tmp2->type == 4 || tmp2->type == 3 || tmp2->type == 5 || tmp2->type == 6)
 	{
 		if (ft_lstsize_type(tmp2) == 2)
 			(*cmd)->cmd = ft_strdup("");
@@ -115,7 +121,7 @@ void	get_command(t_type *tmp2, char *str, t_cmd **cmd, t_type **expanded_types)
 		}
 		else
 		{
-			while(tmp->type == 4 || tmp->type == 3)
+			while(tmp->type == 4 || tmp->type == 3 || tmp2->type == 5 || tmp2->type == 6)
 				tmp = tmp->next->next;
 			(*cmd)->cmd = get_cmd_path(tmp->word, g_data->env);
 		}

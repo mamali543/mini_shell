@@ -6,7 +6,7 @@
 /*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 00:34:36 by macbookpro        #+#    #+#             */
-/*   Updated: 2021/10/27 00:09:35 by macbookpro       ###   ########.fr       */
+/*   Updated: 2021/10/28 16:03:47 by macbookpro       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,7 @@ char	*get_cmd_path(char *str, t_list *env)
 		env_tmp = env_tmp->next;
 	}
 	path = ft_split(cmd, ':');
-	printf("before %s\n", str);
 	str = get_absolute_path(path, str);
-	printf("after : %s\n", str);
 	free_dpointer(path);
 	return (str);
 }
