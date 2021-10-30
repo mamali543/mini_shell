@@ -6,7 +6,7 @@
 /*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 00:19:25 by macbookpro        #+#    #+#             */
-/*   Updated: 2021/10/27 00:57:39 by macbookpro       ###   ########.fr       */
+/*   Updated: 2021/10/29 17:31:33 by macbookpro       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,63 @@ void	free_nodes_types(t_type	**tmp)
 {
 	t_type	*tmp2;
 	tmp2 = *tmp;
+	printf("hello\n");
+	print_types(*tmp);
 	while (*tmp)
 	{
 		tmp2 = *tmp;
+		*tmp = (*tmp)->next;
 		if (tmp2->word != NULL)
 			free(tmp2->word);
 		free(tmp2);
+	}
+}
+void	free_nodes_env(t_list	**tmp)
+{
+	t_env	*tmp2;
+	while (*tmp)
+	{
+		tmp2 = (*tmp)->content;
 		*tmp = (*tmp)->next;
+		if (tmp2->name != NULL)
+			free(tmp2->name);
+		if (tmp2->content != NULL)
+			free(tmp2->content);
+		free(tmp2);
 	}
 }
 
+void	free_nodes_cmd(t_list	**tmp)
+{
+	t_cmd	*tmp2;
+	t_type *t;
+	while (*tmp)
+	{
+		tmp2 = (*tmp)->content;
+		t = (t_type *)tmp2->args_list->content;
+		*tmp = (*tmp)->next;
+		if (tmp2->cmd != NULL)
+			free(tmp2->cmd);
+		if (tmp2->args_list != NULL)
+			free_nodes_types(&t);
+		free(tmp2);
+	}
+}
+	
+void	free_functio(void)
+{
+	// 	printf("-----------------eeee-------------------\n");
+	// 	t_cmd *cmd = (t_cmd *)g_data->cmd_list;
+	// print_types((t_type *)cmd->args_list->content);
+	// 	printf("-------------------zzzzz-----------------\n");
+
+		// printf("------------------------------------\n");
+		// printf("------------------------------------\n");
+
+	free(g_data->line);
+	// free_nodes_cmd(&g_data->cmd_list);
+	free_nodes_env(&g_data->env);
+	printlist(g_data->env);
+	t_type *t = (t_type *)g_data->tokkens->content;
+	free_nodes_types(&t);
+}

@@ -1,12 +1,14 @@
 #include "minishell.h"
 
-t_list	*get_args(t_list **args ,t_type	*types)
+t_list	*get_args(t_list **args ,t_type	*types, t_cmd **cmd)
 {
 	t_type	*tmp;
 	t_type	*prev;
 	t_list	*list_files;
+	int		i;
 
 	tmp = types;
+	i = 0;
 	list_files = NULL;
 	while (tmp)
 	{
@@ -25,6 +27,9 @@ t_list	*get_args(t_list **args ,t_type	*types)
 		}
 		tmp = tmp->next;
 	}
+	(*cmd)->str = ll_to_dp(*args);
+	while ((*cmd)->str[i])
+		printf(">>>>>%s\n", (*cmd)->str[i++]);
 	// t_list *list = *args;
 	// while (list)
 	// {
@@ -142,10 +147,11 @@ void	expand_cmdlist(t_list *tmp, char *str)
 		tmp2 = tmp->content;
 		// printf("ici = %s|\n", tmp2->word);
 		expanded_types = expander(tmp->content);
+		print_types(expanded_types);
 		cmd = malloc(sizeof(t_cmd));
 		get_command(tmp2, str, &cmd, &expanded_types);
 		cmd->args_list = NULL;
-		list_files = get_args(&(cmd->args_list), expanded_types);
+		list_files = get_args(&(cmd->args_list), expanded_types, &cmd);
 		get_out(&(cmd->out), list_files, expanded_types);
 		get_in(&(cmd->in), list_files, expanded_types);
 		ft_lstadd_back(&g_data->cmd_list, ft_lstnew(cmd));
@@ -156,30 +162,24 @@ void	expand_cmdlist(t_list *tmp, char *str)
 
 int		main(int argc, char **argv, char **env)
 {
-	t_list *tmp;
-	char *str;
-
 	g_data = malloc(sizeof(t_data));
 	init_env_list(env);
 	argc = 0;
 	argv = NULL;
-	str = NULL;
 	while (1)
 	{
 		g_data->tokkens = NULL;
 		g_data->cmd_list = NULL;
 		if (!(g_data->line = readline("ader🤡$>")))
 	    	return (1);
-		printf("heeeere :%s||\n", g_data->line);
-		syntax_error();
 		parser();
-		tmp = g_data->tokkens;
-		expand_cmdlist(tmp, str);
 		print_cmd();
 		// excute_cmd();
 		print_tokkens();
 		add_history(g_data->line);
+		//free_functio();
 		// check_words(tmp);
 	}
 	return (0);
 }
+

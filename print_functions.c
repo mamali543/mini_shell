@@ -6,7 +6,7 @@
 /*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 16:13:55 by mamali            #+#    #+#             */
-/*   Updated: 2021/10/27 18:00:05 by macbookpro       ###   ########.fr       */
+/*   Updated: 2021/10/30 01:02:20 by macbookpro       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,12 @@ void	print_cmd(void)
 {
 	t_list *tmp;
 	t_cmd *tmp2;
+	int		i;
 
 	tmp = g_data->cmd_list;
 	while (tmp)
 	{
+		i = 0;
 		tmp2 = tmp->content;
 		printf("cmd is : %s\n", tmp2->cmd);
 		printf("------------------------------------\n");
@@ -56,6 +58,13 @@ void	print_cmd(void)
 		{
 			printf("%s| " , (char *)tmp3->content);
 			tmp3 = tmp3->next;
+		}
+		char **p = tmp2->str;
+		while (p[i])
+		{
+			printf("\n");
+			printf("nob%s\n", p[i]);
+			i++;
 		}
 		printf("\n------------------------------------\n");
 		printf("in is : %d\n", tmp2->in);
@@ -77,6 +86,7 @@ void	printlist(t_list *env)
 		printf("%s=%s\n", env_l->name, env_l->content);
 		lst = lst->next;
 	}
+	printf("eee\n");
 }
 
 void	printlist_cl(t_list *env)

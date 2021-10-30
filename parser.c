@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamali <mamali@student.42.fr>              +#+  +:+       +#+        */
+/*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/24 12:48:20 by mamali            #+#    #+#             */
-/*   Updated: 2021/10/25 21:55:52 by mamali           ###   ########.fr       */
+/*   Updated: 2021/10/30 01:09:29 by macbookpro       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,10 @@ void	parser(void)
 		ft_lstadd_back(&g_data->tokkens, ft_lstnew(tmp));
 		tmp = NULL;
 	}
+	t_list *tmp1;
+	char *str;
+	
+	str = NULL;
+	tmp1 = g_data->tokkens;
+	expand_cmdlist(tmp1, str);
 }

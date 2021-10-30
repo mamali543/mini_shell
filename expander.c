@@ -45,8 +45,7 @@ static void	to_skip(char *s, size_t *a, t_list **head, size_t i)
 		return ;
 	}
 	(*a)++;
-	while (((s[(*a)] != '$') && (s[(*a)] != '\'') && (s[(*a)] != ' ') \
-		&& (s[(*a)] != '"') && (s[(*a)] != '-')) && s[(*a)])
+	while (ft_isalnum(s[(*a)]) == 1)
 			add_to_lk(s, (*a)++, tmp, &list_keys);
 	key = ll_to_string(list_keys);
 	key = return_env_value(key);

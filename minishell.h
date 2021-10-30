@@ -52,6 +52,7 @@ typedef	struct s_cmd
 {
 	char	*cmd;
 	t_list	*args_list;
+	char	**str;
 	int		in;
 	int		out;
 }				t_cmd;
@@ -122,4 +123,5 @@ void	add_tab_to_ll(t_type **head, char *str, int type, int a);
 t_list	*fill_list(size_t *i, char c);
 void    log_error(char *s);
 void    syntax_error();
+void	free_functio();	
 #endif
