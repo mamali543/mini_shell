@@ -129,5 +129,6 @@ void	free_functio();
 char    **ft_free_split(char **d);
 void	free_nodes_cmd(t_list	*tmp);
 char    **ft_print_split(char **d);
+int     is_redirection(int i);
 
 #endif

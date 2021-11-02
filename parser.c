@@ -6,7 +6,7 @@
 /*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/24 12:48:20 by mamali            #+#    #+#             */
-/*   Updated: 2021/10/30 01:09:29 by macbookpro       ###   ########.fr       */
+/*   Updated: 2021/11/02 22:07:09 by macbookpro       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,6 @@ void	parser(void)
 	
 	str = NULL;
 	tmp1 = g_data->tokkens;
+	syntax_error(tmp1);
 	expand_cmdlist(tmp1, str);
 }

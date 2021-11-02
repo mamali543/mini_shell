@@ -1,23 +1,22 @@
 #include "minishell.h"
 
+// TODO TYUJYTUTYHTUYU
 t_list	*get_args(t_list **args ,t_type	*types, t_cmd **cmd)
 {
 	t_type	*tmp;
 	t_list	*list_files;
-	int		i;
 
 	tmp = types;
-	i = 0;
 	list_files = NULL;
 	while (tmp)
 	{
-		if (tmp->type == 4 || tmp->type == 3 || tmp->type == 5 || tmp->type == 6)
+		if (is_redirection(tmp->type) && tmp->next && !is_redirection(tmp->next->type))
 			ft_lstadd_back(&list_files, ft_lstnew(tmp->next->word));
-		if (tmp->type != 4 && tmp->type != 3 && tmp->type != 5 && tmp->type != 6)
+		if (!is_redirection(tmp->type))
 		{
 			if (tmp->prev != NULL)
 			{
-				if (tmp->prev->type != 4 && tmp->prev->type != 3 && tmp->prev->type != 5 && tmp->prev->type != 6)
+				if (!is_redirection(tmp->prev->type))
 					help_args(&tmp, args);
 			}
 			else
@@ -26,14 +25,6 @@ t_list	*get_args(t_list **args ,t_type	*types, t_cmd **cmd)
 		tmp = tmp->next;
 	}
 	(*cmd)->str = ll_to_dp(*args);
-	//while ((*cmd)->str[i])
-		//printf(">>>>>%s\n", (*cmd)->str[i++]);
-	// t_list *list = *args;
-	// while (list)
-	// {
-	// 	printf("tt = %s\n", (char *)(list)->content);
-	// 	list = (list)->next;
-	// }
 	return (list_files);
 }
 
@@ -66,17 +57,20 @@ void	get_in(int *i, t_list *list_files, t_type *expanded_types)
 {
 	*i = 0;
 	char	*s;
+
+	s = NULL;
 	if (list_files)
 	{
+		// TODO leaks
 		expanded_types = expanded_types->next;
 		while (expanded_types)
 		{
-			if (expanded_types->prev->type == 5)
+			if (expanded_types->prev->type == 5 && (is_redirection(expanded_types->type) == 0))
 			{
 				s = expanded_types->word;
 				*i = ft_heredoc(expanded_types->word);
 			}
-			else if (expanded_types->prev->type == 6)
+			else if (expanded_types->prev->type == 6 && (is_redirection(expanded_types->type) == 0))
 			{
 				s = expanded_types->word;
 				*i = open(expanded_types->word, O_RDONLY);
@@ -98,9 +92,9 @@ void	get_out(int *i, t_list *list_files, t_type *expanded_types)
 		while (expanded_types)
 		{
 			s = expanded_types->word;
-			if (expanded_types->prev->type == 4)
+			if (expanded_types->prev->type == 4 && (is_redirection(expanded_types->type) == 0))
 				*i = open(s, O_WRONLY | O_CREAT | O_TRUNC , 0777);  ///hadi asat ra kant khasra mhm ra 9aditha
-			else if (expanded_types->prev->type == 3)
+			else if (expanded_types->prev->type == 3 && (is_redirection(expanded_types->type) == 0))
 				*i = open(s, O_WRONLY | O_CREAT | O_APPEND , 0777);
 			expanded_types = expanded_types->next;
 		}
@@ -113,8 +107,8 @@ void	get_command(t_type *tmp2, char *str, t_cmd **cmd, t_type **expanded_types)
 	t_type	*tmp;
 
 	tmp = tmp2;
-	print_types(tmp);
-	if (tmp2->type == 4 || tmp2->type == 3 || tmp2->type == 5 || tmp2->type == 6)
+	// print_types(tmp);
+	if (is_redirection(tmp2->type))
 	{
 		if (ft_lstsize_type(tmp2) == 2)
 			(*cmd)->cmd = ft_strdup("");
@@ -125,8 +119,7 @@ void	get_command(t_type *tmp2, char *str, t_cmd **cmd, t_type **expanded_types)
 		}
 		else
 		{
-			//hna khdem b tmp2 machi tmp eendk
-			while(tmp2->type == 4 || tmp2->type == 3 || tmp2->type == 5 || tmp2->type == 6)
+			while(is_redirection(tmp2->type))
 				tmp2 = tmp2->next->next;
 			(*cmd)->cmd = get_cmd_path(tmp2->word, g_data->env);
 		}
