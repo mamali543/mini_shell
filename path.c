@@ -69,10 +69,8 @@ char	*get_cmd_path(char *str, t_list *env)
 	char	**path;
 	char	*cmd;
 	t_env	*env_l;
-	int		i;
 
 	env_tmp = env;
-	i = 0;
 	while (env_tmp)
 	{
 		env_l = env_tmp->content;

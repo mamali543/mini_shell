@@ -75,8 +75,9 @@ static void	expand_word(char *str, t_list **head, int a, size_t i)
 		{
 			f = i;
 			to_skip(str , &i, head, f);
-
 		}
+		else if (str[i] == '?')
+			ft_putnbr_fd(g_data->exitstatu, 1);
 		else if (str[i] == ' ' && a == 0)
 		{
 			ft_lstadd_back(head, ft_lstnew(tmp));

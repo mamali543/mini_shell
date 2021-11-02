@@ -77,9 +77,8 @@ void	add_tab_to_ll(t_type **head, char *str, int type, int a)
 void	free_nodes_types(t_type	**tmp)
 {
 	t_type	*tmp2;
-	tmp2 = *tmp;
-	printf("hello\n");
-	print_types(*tmp);
+	//tmp2 = *tmp;
+	//print_types(*tmp);
 	while (*tmp)
 	{
 		tmp2 = *tmp;
@@ -104,19 +103,24 @@ void	free_nodes_env(t_list	**tmp)
 	}
 }
 
-void	free_nodes_cmd(t_list	**tmp)
+void	free_nodes_cmd(t_list	*tmp)
 {
 	t_cmd	*tmp2;
 	t_type *t;
-	while (*tmp)
+	t_list	*p;
+
+	while (tmp)
 	{
-		tmp2 = (*tmp)->content;
-		t = (t_type *)tmp2->args_list->content;
-		*tmp = (*tmp)->next;
+		tmp2 = (tmp)->content;
+		p = (tmp2->args_list);
+		t = (t_type *)p->content;
+		//print_types(t);
+		tmp = (tmp)->next;
 		if (tmp2->cmd != NULL)
 			free(tmp2->cmd);
-		if (tmp2->args_list != NULL)
-			free_nodes_types(&t);
+		ft_free_split(tmp2->str);
+		/*if (t)
+			free_nodes_types(&t);*/
 		free(tmp2);
 	}
 }
@@ -132,9 +136,9 @@ void	free_functio(void)
 		// printf("------------------------------------\n");
 
 	free(g_data->line);
-	// free_nodes_cmd(&g_data->cmd_list);
-	free_nodes_env(&g_data->env);
-	printlist(g_data->env);
+	free_nodes_cmd(g_data->cmd_list);
+	//free_nodes_env(&g_data->env);
+	//printlist(g_data->env);
 	t_type *t = (t_type *)g_data->tokkens->content;
 	free_nodes_types(&t);
 }

@@ -73,6 +73,8 @@ typedef struct s_data
 	t_list	*cmd_list;
 	t_list	*tokkens;
 	char	*line;
+	int		exitstatu;
+	int		numcmd;
 
 }				t_data;
 
@@ -123,5 +125,9 @@ void	add_tab_to_ll(t_type **head, char *str, int type, int a);
 t_list	*fill_list(size_t *i, char c);
 void    log_error(char *s);
 void    syntax_error();
-void	free_functio();	
+void	free_functio();
+char    **ft_free_split(char **d);
+void	free_nodes_cmd(t_list	*tmp);
+char    **ft_print_split(char **d);
+
 #endif

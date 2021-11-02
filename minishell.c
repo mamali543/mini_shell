@@ -3,7 +3,6 @@
 t_list	*get_args(t_list **args ,t_type	*types, t_cmd **cmd)
 {
 	t_type	*tmp;
-	t_type	*prev;
 	t_list	*list_files;
 	int		i;
 
@@ -12,7 +11,6 @@ t_list	*get_args(t_list **args ,t_type	*types, t_cmd **cmd)
 	list_files = NULL;
 	while (tmp)
 	{
-		prev = tmp->prev;
 		if (tmp->type == 4 || tmp->type == 3 || tmp->type == 5 || tmp->type == 6)
 			ft_lstadd_back(&list_files, ft_lstnew(tmp->next->word));
 		if (tmp->type != 4 && tmp->type != 3 && tmp->type != 5 && tmp->type != 6)
@@ -28,8 +26,8 @@ t_list	*get_args(t_list **args ,t_type	*types, t_cmd **cmd)
 		tmp = tmp->next;
 	}
 	(*cmd)->str = ll_to_dp(*args);
-	while ((*cmd)->str[i])
-		printf(">>>>>%s\n", (*cmd)->str[i++]);
+	//while ((*cmd)->str[i])
+		//printf(">>>>>%s\n", (*cmd)->str[i++]);
 	// t_list *list = *args;
 	// while (list)
 	// {
@@ -66,45 +64,45 @@ int	ft_heredoc(char *str)
 
 void	get_in(int *i, t_list *list_files, t_type *expanded_types)
 {
+	*i = 0;
+	char	*s;
 	if (list_files)
 	{
 		expanded_types = expanded_types->next;
 		while (expanded_types)
 		{
-			// printf("file_out is = %s %d\n", expanded_types->word, expanded_types->type);
 			if (expanded_types->prev->type == 5)
 			{
-				printf("file_in %s\n", expanded_types->word);
+				s = expanded_types->word;
 				*i = ft_heredoc(expanded_types->word);
 			}
 			else if (expanded_types->prev->type == 6)
 			{
-				printf("%s\n", expanded_types->word);
+				s = expanded_types->word;
 				*i = open(expanded_types->word, O_RDONLY);
 			}	
 			expanded_types = expanded_types->next;
 		}
+		printf("file_in is = %s\n", s);
 	}
 }
 
 void	get_out(int *i, t_list *list_files, t_type *expanded_types)
 {
 	char	*s;
+
+	*i = 1;
 	if (list_files)
 	{
-		s = ft_lstlast(list_files)->content;
-		printf("file_out is = %s\n", s);
-		while (strcmp(expanded_types->word, s) != 0)
-			expanded_types = expanded_types->next;
-		if (expanded_types->prev->type == 4)
-			*i = open(s, O_WRONLY | O_CREAT | O_TRUNC , 0777);
-		else if (expanded_types->prev->type == 3)
-			*i = open(s, O_WRONLY | O_CREAT | O_APPEND , 0777);
-		while (list_files)
+		expanded_types = expanded_types->next;
+		while (expanded_types)
 		{
-			if (ft_strncmp(s, list_files->content, strlen(s) + 1) != 0)
-				open(list_files->content, O_WRONLY | O_CREAT | O_TRUNC , 0777);
-			list_files = list_files->next;
+			s = expanded_types->word;
+			if (expanded_types->prev->type == 4)
+				*i = open(s, O_WRONLY | O_CREAT | O_TRUNC , 0777);  ///hadi asat ra kant khasra mhm ra 9aditha
+			else if (expanded_types->prev->type == 3)
+				*i = open(s, O_WRONLY | O_CREAT | O_APPEND , 0777);
+			expanded_types = expanded_types->next;
 		}
 	}
 }
@@ -115,6 +113,7 @@ void	get_command(t_type *tmp2, char *str, t_cmd **cmd, t_type **expanded_types)
 	t_type	*tmp;
 
 	tmp = tmp2;
+	print_types(tmp);
 	if (tmp2->type == 4 || tmp2->type == 3 || tmp2->type == 5 || tmp2->type == 6)
 	{
 		if (ft_lstsize_type(tmp2) == 2)
@@ -126,9 +125,9 @@ void	get_command(t_type *tmp2, char *str, t_cmd **cmd, t_type **expanded_types)
 		}
 		else
 		{
-			while(tmp->type == 4 || tmp->type == 3 || tmp2->type == 5 || tmp2->type == 6)
-				tmp = tmp->next->next;
-			(*cmd)->cmd = get_cmd_path(tmp->word, g_data->env);
+			while(tmp2->type == 4 || tmp2->type == 3 || tmp2->type == 5 || tmp2->type == 6)
+				tmp2 = tmp2->next->next;
+			(*cmd)->cmd = get_cmd_path(tmp2->word, g_data->env);
 		}
 	}
 	else if (tmp2->type == 0)
@@ -139,15 +138,18 @@ void	expand_cmdlist(t_list *tmp, char *str)
 {
 	t_cmd	*cmd;
 	t_type	*expanded_types;
+	int		i;
 	t_list	*list_files;
 	t_type	*tmp2;
 
+	i = 0;
 	while (tmp)
 	{
+		i++;
 		tmp2 = tmp->content;
 		// printf("ici = %s|\n", tmp2->word);
 		expanded_types = expander(tmp->content);
-		print_types(expanded_types);
+		//print_types(expanded_types);
 		cmd = malloc(sizeof(t_cmd));
 		get_command(tmp2, str, &cmd, &expanded_types);
 		cmd->args_list = NULL;
@@ -156,11 +158,12 @@ void	expand_cmdlist(t_list *tmp, char *str)
 		get_in(&(cmd->in), list_files, expanded_types);
 		ft_lstadd_back(&g_data->cmd_list, ft_lstnew(cmd));
 		tmp = tmp->next;
-		printf("--------------------\n");
+		//printf("--------------------\n");
 	}
+	g_data->numcmd = i;
 }
 
-int		main(int argc, char **argv, char **env)
+/*int		main(int argc, char **argv, char **env)
 {
 	g_data = malloc(sizeof(t_data));
 	init_env_list(env);
@@ -181,5 +184,5 @@ int		main(int argc, char **argv, char **env)
 		// check_words(tmp);
 	}
 	return (0);
-}
+}*/
 

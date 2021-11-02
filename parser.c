@@ -55,8 +55,8 @@ void	parser(void)
 		ft_lstadd_back(&g_data->tokkens, ft_lstnew(tmp));
 		tmp = NULL;
 	}
-	t_list *tmp1;
 	char *str;
+	t_list *tmp1;
 	
 	str = NULL;
 	tmp1 = g_data->tokkens;
