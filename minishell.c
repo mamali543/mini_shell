@@ -125,6 +125,7 @@ void	get_command(t_type *tmp2, char *str, t_cmd **cmd, t_type **expanded_types)
 		}
 		else
 		{
+			//hna khdem b tmp2 machi tmp eendk
 			while(tmp2->type == 4 || tmp2->type == 3 || tmp2->type == 5 || tmp2->type == 6)
 				tmp2 = tmp2->next->next;
 			(*cmd)->cmd = get_cmd_path(tmp2->word, g_data->env);
