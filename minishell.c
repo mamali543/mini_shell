@@ -1,6 +1,5 @@
 #include "minishell.h"
-
-// TODO TYUJYTUTYHTUYU
+// dans cette fonction je retourne une liste des fichier et je remplis args_list avec les arguments
 t_list	*get_args(t_list **args ,t_type	*types, t_cmd **cmd)
 {
 	t_type	*tmp;
@@ -61,7 +60,6 @@ void	get_in(int *i, t_list *list_files, t_type *expanded_types)
 	s = NULL;
 	if (list_files)
 	{
-		// TODO leaks
 		expanded_types = expanded_types->next;
 		while (expanded_types)
 		{
@@ -100,19 +98,16 @@ void	get_out(int *i, t_list *list_files, t_type *expanded_types)
 		}
 	}
 }
-// > file echo sdsd > file2
-// echo "$PATH"dfgd
+
+// verifier s'il y'a un genre de redirection au debut de la commande, si oui :
+// je distingue les operations selon la longueur de la commande
 void	get_command(t_type *tmp2, char *str, t_cmd **cmd, t_type **expanded_types)
 {
-	t_type	*tmp;
-
-	tmp = tmp2;
-	// print_types(tmp);
 	if (is_redirection(tmp2->type))
 	{
-		if (ft_lstsize_type(tmp2) == 2)
+		if (ft_lstsize_type(tmp2) == 2) // cmd = " "
 			(*cmd)->cmd = ft_strdup("");
-		else if (ft_lstsize_type(tmp2) == 3)
+		else if (ft_lstsize_type(tmp2) == 3) // j'affecte le troisieme elment a cmd;
 		{
 			str = get_node(tmp2)->word;
 			(*cmd)->cmd = get_cmd_path(str, g_data->env);
@@ -120,30 +115,30 @@ void	get_command(t_type *tmp2, char *str, t_cmd **cmd, t_type **expanded_types)
 		else
 		{
 			while(is_redirection(tmp2->type))
-				tmp2 = tmp2->next->next;
+				tmp2 = tmp2->next->next; // je pointe apres le fichier et je verifie s'il y'a une commande ou bien une autre directive de redirection
 			(*cmd)->cmd = get_cmd_path(tmp2->word, g_data->env);
 		}
 	}
 	else if (tmp2->type == 0)
-		(*cmd)->cmd = get_cmd_path((*expanded_types)->word, g_data->env);
+		(*cmd)->cmd = get_cmd_path((*expanded_types)->word, g_data->env); // la commande doit etre la premiere
 }
+
+// loup sur g_data->tokkens, pour remplir la structure t_cmd et j'ajoute cette derniere dans l'arriere de g_data->cmd_list
 
 void	expand_cmdlist(t_list *tmp, char *str)
 {
 	t_cmd	*cmd;
-	t_type	*expanded_types;
-	int		i;
+	t_type	*expanded_types; //katakhed nodes dyal list tmp fihom types m2expandyin
 	t_list	*list_files;
-	t_type	*tmp2;
+	t_type	*tmp2; // katpointer eela content dyal list tmp li fiha types.
+	int		i;
 
 	i = 0;
 	while (tmp)
 	{
 		i++;
 		tmp2 = tmp->content;
-		// printf("ici = %s|\n", tmp2->word);
 		expanded_types = expander(tmp->content);
-		//print_types(expanded_types);
 		cmd = malloc(sizeof(t_cmd));
 		get_command(tmp2, str, &cmd, &expanded_types);
 		cmd->args_list = NULL;
@@ -152,7 +147,6 @@ void	expand_cmdlist(t_list *tmp, char *str)
 		get_in(&(cmd->in), list_files, expanded_types);
 		ft_lstadd_back(&g_data->cmd_list, ft_lstnew(cmd));
 		tmp = tmp->next;
-		//printf("--------------------\n");
 	}
 	g_data->numcmd = i;
 }
