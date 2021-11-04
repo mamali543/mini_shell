@@ -6,7 +6,7 @@
 /*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 20:10:02 by mamali            #+#    #+#             */
-/*   Updated: 2021/11/04 02:46:59 by macbookpro       ###   ########.fr       */
+/*   Updated: 2021/11/04 16:20:35 by macbookpro       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void    log_error(char *s)
 {
 	ft_putstr(s);
+	g_data->exitstatu = 258;
 }
 
 int     is_redirection(int i)
@@ -39,56 +40,58 @@ char	*get_sq_word(t_type *types, int i, int *f)
 int		check_words(t_type *tmp)
 {
 	t_type  *tmp2;
+	t_type  *tmp1;
 	int     i;
 	int		f;
 	char 	*str;
 
 	i = 0;
 	tmp2 = tmp;
+	tmp1 = tmp;
+	if (g_data->line[0] == '|')
+		return (0);
 	while (g_data->line[i] != '|' && g_data->line[i])
 	{
 		if (g_data->line[i] == '\'')
 		{
 			f = 1;
 			str = get_sq_word(tmp2, 1, &f);
-			printf("%s\n", str);
 			while (tmp2 && f != 0)
 			{
 				f--;
 				tmp2 = tmp2->next;
 			}
 			i += ft_strlen(str) + 1;
+			if (g_data->line[i] != '\'')
+				return (0);
+		}
+		else if (g_data->line[i] == '"')
+		{
+			f = 1;
+			str = get_sq_word(tmp1, 2, &f);
+			while (tmp1 && f != 0)
+			{
+				f--;
+				tmp1 = tmp1->next;
+			}
+			i += ft_strlen(str) + 1;
+			if (g_data->line[i] != '"')
+				return (0);
 		}
 		i++;
 	}
-	if (g_data->line[i] == '|')
+	while (g_data->line[++i] && g_data->line[i] == ' ')
+		i++;
+	if (g_data->line[i - 1] == '|')
 		return (0);
-	if (tmp2 && tmp2->word[0] == '|')
-		return(0);
-	// i = 0;
-	// while (tmp2)
-	// {
-	// 	if (tmp2->word[0] == '\'')
-	// 	{
-	// 		if (ft_strlen(tmp2->word) == 1)
-	// 			return (0);
-	// 		i = ft_strlen(tmp2->word);
-	// 		if (tmp2->word[i - 1] != '\'')
-	// 			return (0);
-	// 	}
-	// 	else if (tmp2->word[0] == '"')
-	// 	{
-	// 		if (ft_strlen(tmp2->word) == 1)
-	// 			return (0);
-	// 		i = ft_strlen(tmp2->word);
-	// 		if (tmp2->word[i - 1] != '"')
-	// 			return (0);	
-	// 	}
-	// 	if (is_redirection(tmp2->type))
-	// 		if (!(tmp2->next))
-	// 			return (0);
-	// 	tmp2 = tmp2->next;
-	// }
+	tmp2 = tmp;
+	while (tmp2)
+	{
+		if (is_redirection(tmp2->type))
+			if (!(tmp2->next))
+				return (0);
+		tmp2 = tmp2->next;
+	}
 	return (1);
 }
 

@@ -23,7 +23,7 @@ void	add_in(size_t *i, char c, t_type **head)
 	else if (k == 2)
 		ft_lstadd_back_type(head,ft_lstnew_type(str, 5, 0));
 	else
-		printf("syntax_error\n");
+		log_error("syntax_error\n");
 }
 void	add_out(size_t *i, char c, t_type **head)
 {
@@ -48,7 +48,7 @@ void	add_out(size_t *i, char c, t_type **head)
 	else if (k == 2)
 		ft_lstadd_back_type(head,ft_lstnew_type(str, 3, 0));
 	else
-		printf("syntax_error\n");
+		log_error("syntax_error\n");
 }
 
 /*since i didn't meet the c charachter i add the charchters between '' or "" in a struct type t_cl that add a charchter in a c variable
