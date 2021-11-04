@@ -6,7 +6,7 @@
 /*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 13:47:41 by otaouil           #+#    #+#             */
-/*   Updated: 2021/11/02 22:11:46 by macbookpro       ###   ########.fr       */
+/*   Updated: 2021/11/04 00:15:35 by macbookpro       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1289,8 +1289,8 @@ void	exec_cmd(char **cmd1, t_data *l, t_cmd *cmd)
 void    ft_check(t_data *l, t_cmd *cmd)
 {
     char *str;
-
-	if (!cmd->str)
+	
+	if (!cmd->cmd || !cmd->str)
 		return ;
     else if(!strncmp(cmd->str[0], "help", 5))
         do_help();

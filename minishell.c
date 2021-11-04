@@ -103,6 +103,8 @@ void	get_out(int *i, t_list *list_files, t_type *expanded_types)
 // je distingue les operations selon la longueur de la commande
 void	get_command(t_type *tmp2, char *str, t_cmd **cmd, t_type **expanded_types)
 {
+	if (!tmp2)
+		return ;
 	if (is_redirection(tmp2->type))
 	{
 		if (ft_lstsize_type(tmp2) == 2) // cmd = " "
@@ -124,6 +126,13 @@ void	get_command(t_type *tmp2, char *str, t_cmd **cmd, t_type **expanded_types)
 }
 
 // loup sur g_data->tokkens, pour remplir la structure t_cmd et j'ajoute cette derniere dans l'arriere de g_data->cmd_list
+void	init_cmd(t_cmd *cmd)
+{
+	cmd->cmd = NULL;
+	cmd->str = NULL;
+	cmd->in = 0;
+	cmd->out = 1;
+}
 
 void	expand_cmdlist(t_list *tmp, char *str)
 {
@@ -140,6 +149,7 @@ void	expand_cmdlist(t_list *tmp, char *str)
 		tmp2 = tmp->content;
 		expanded_types = expander(tmp->content);
 		cmd = malloc(sizeof(t_cmd));
+		init_cmd(cmd);
 		get_command(tmp2, str, &cmd, &expanded_types);
 		cmd->args_list = NULL;
 		list_files = get_args(&(cmd->args_list), expanded_types, &cmd);

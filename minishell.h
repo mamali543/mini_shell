@@ -75,7 +75,6 @@ typedef struct s_data
 	char	*line;
 	int		exitstatu;
 	int		numcmd;
-
 }				t_data;
 
 t_data		*g_data;
@@ -94,7 +93,7 @@ t_type	*expander(t_type *tmp);
 int     real_character(char *line, int i, char c);
 t_type	*ft_lstnew_type(char *content, int i, int b);
 void	ft_lstadd_back_type(t_type **alst, t_type *new);
-void    check_words(t_type *tmp);
+int		check_words(t_type *tmp);
 char	*make_string(char *str, char c);
 int     real_character1(char *line, int i, char c);
 char	*return_env_value(char *key);
@@ -130,5 +129,5 @@ char    **ft_free_split(char **d);
 void	free_nodes_cmd(t_list	*tmp);
 char    **ft_print_split(char **d);
 int     is_redirection(int i);
-
+char	*get_sq_word(t_type *types, int j, int *f);
 #endif
