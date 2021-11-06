@@ -3,31 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbook <macbook@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mamali <mamali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 00:34:36 by macbookpro        #+#    #+#             */
-/*   Updated: 2021/11/05 07:23:55 by macbook          ###   ########.fr       */
+/*   Updated: 2021/11/06 20:21:14 by mamali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*my_ft_strjoin(char const *s1, char const *s2)
-{
-	char	*p;
-	int		i;
-	int		j;
+// char	*my_ft_strjoin(char const *s1, char const *s2)
+// {
+// 	char	*p;
+// 	int		i;
+// 	int		j;
 
-	i = ft_strlen((char *)s1);
-	j = ft_strlen((char *)s2);
-	p = malloc(i + j + 2);
-	if (!(p))
-		return (0);
-	ft_strcpy(p, (char *)s1);
-	ft_strcpy(&p[i], "/");
-	ft_strcpy(&p[i + 1], (char *)s2);
-	return (p);
-}
+// 	i = ft_strlen((char *)s1);
+// 	j = ft_strlen((char *)s2);
+// 	p = malloc(i + j + 2);
+// 	if (!(p))
+// 		return (0);
+// 	ft_strcpy(p, (char *)s1);
+// 	ft_strcpy(&p[i], "/");
+// 	ft_strcpy(&p[i + 1], (char *)s2);
+// 	return (p);
+// }
 
 // char	*get_absolute_path(char **path, char *str)
 // {
@@ -48,6 +48,19 @@ char	*my_ft_strjoin(char const *s1, char const *s2)
 // 	return (NULL);
 // }
 
+void	free_dpointer(char	**tokkens)
+{
+	int		i;
+
+	i = 0;
+	while (tokkens[i])
+	{
+		free(tokkens[i]);
+		i++;
+	}
+	free(tokkens);
+}
+
 char	*get_absolute_path(char **pa, char *cmd)
 {
 	int			i;
@@ -56,6 +69,9 @@ char	*get_absolute_path(char **pa, char *cmd)
 	int			fd;
 
 	i = 0;
+	fd = open(cmd, O_RDONLY);
+	if (fd > 0)
+		return (ft_strdup(cmd));
 	while (pa[i])
 	{
 		str = ft_strjoin(pa[i], "/");
@@ -68,20 +84,7 @@ char	*get_absolute_path(char **pa, char *cmd)
 		free(str);
 		i++;
 	}
-	return (0);
-}
-
-void	free_dpointer(char	**tokkens)
-{
-	int		i;
-
-	i = 0;
-	while (tokkens[i])
-	{
-		free(tokkens[i]);
-		i++;
-	}
-	free(tokkens);
+	return (ft_strdup(cmd));
 }
 
 char	*get_cmd_path(char *str, t_list *env)
@@ -102,6 +105,5 @@ char	*get_cmd_path(char *str, t_list *env)
 	path = ft_split(cmd, ':');
 	str = get_absolute_path(path, str);
 	free_table(path);
-	// free_dpointer(path);
 	return (str);
 }
