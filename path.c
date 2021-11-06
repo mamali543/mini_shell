@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
+/*   By: macbook <macbook@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 00:34:36 by macbookpro        #+#    #+#             */
-/*   Updated: 2021/10/30 00:34:41 by macbookpro       ###   ########.fr       */
+/*   Updated: 2021/11/05 07:23:55 by macbook          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,25 +29,46 @@ char	*my_ft_strjoin(char const *s1, char const *s2)
 	return (p);
 }
 
-char	*get_absolute_path(char **path, char *str)
+// char	*get_absolute_path(char **path, char *str)
+// {
+// 	int		i;
+// 	int		fd;
+// 	char	*cmd;
+
+// 	i = 0;
+// 	while (path[i])
+// 	{
+// 		cmd = my_ft_strjoin(path[i], str);
+// 		fd = open(cmd, O_RDONLY);
+// 		if (fd > 0)
+// 			return (cmd);
+// 		free(cmd);
+// 		i++;
+// 	}
+// 	return (NULL);
+// }
+
+char	*get_absolute_path(char **pa, char *cmd)
 {
-	int		i;
-	int		fd;
-	char	*cmd;
+	int			i;
+	char		*str;
+	char		*tmp;
+	int			fd;
 
 	i = 0;
-	cmd = NULL;
-	while (path[i])
+	while (pa[i])
 	{
-		cmd = my_ft_strjoin(path[i], str);
-		fd = open(cmd, O_RDONLY);
+		str = ft_strjoin(pa[i], "/");
+		tmp = str;
+		str = ft_strjoin(tmp, cmd);
+		free(tmp);
+		fd = open(str, O_RDONLY);
 		if (fd > 0)
-			break ;
-		close(fd);
+			return (str);
+		free(str);
 		i++;
 	}
-	close(fd);
-	return (cmd);
+	return (0);
 }
 
 void	free_dpointer(char	**tokkens)
@@ -80,6 +101,7 @@ char	*get_cmd_path(char *str, t_list *env)
 	}
 	path = ft_split(cmd, ':');
 	str = get_absolute_path(path, str);
+	free_table(path);
 	// free_dpointer(path);
 	return (str);
 }

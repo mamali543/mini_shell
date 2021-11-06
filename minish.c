@@ -6,7 +6,7 @@
 /*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 13:47:41 by otaouil           #+#    #+#             */
-/*   Updated: 2021/11/04 00:15:35 by macbookpro       ###   ########.fr       */
+/*   Updated: 2021/11/06 00:20:31 by macbookpro       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1416,30 +1416,34 @@ int		main(int argc, char **argv, char **env)
 	init_env_list(env);
 	argc = 0;
 	argv = NULL;
-	while (1)
-	{
+	// while (1)
+	// {
+		g_data->line = readline(">");
 		g_data->tokkens = NULL;
 		g_data->cmd_list = NULL;
-		signal(SIGINT, my_int);
-		if (!(g_data->line = readline("ader🤡$>")))
-	    	return (1);
-		if (g_data->line[0])
-		{
+		// signal(SIGINT, my_int);
+		// if (!(g_data->line = readline("ader🤡$>")))
+	    	// return (1);
+		// if (g_data->line[0])
+		// {
 			parser();
+			clear_and_exit();
+			atexit(report_mem_leak);
 			//print_cmd();
 			//excute_cmd();
 			//print_tokkens();
-			if (g_data->numcmd == 1)
-				ft_check(g_data, g_data->cmd_list->content);
-			else if (g_data->numcmd < 557)
-				mlpipe(g_data);
-			add_history(g_data->line);
-			//free_nodes_cmd(g_data->cmd_list);
+	// 		if (g_data->numcmd == 1)
+	// 			ft_check(g_data, g_data->cmd_list->content);
+	// 		else if (g_data->numcmd < 557)
+	// 			mlpipe(g_data);
+	// 		add_history(g_data->line);
+	// 		//free_nodes_cmd(g_data->cmd_list);
 			// free_functio();
-		}
-		else
-			g_data->exitstatu = 0;
-		// check_words(tmp);
-	}
+	// 	}
+	// 	else
+	// 		g_data->exitstatu = 0;
+	// 	// check_words(tmp);
+	// }
+	for(;;);
 	return (0);
 }

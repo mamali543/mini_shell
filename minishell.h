@@ -17,6 +17,7 @@
 # include <readline/history.h>
 # include <sys/time.h>
 # include "ft_libft/libft.h"
+# include "leak_detector_c/leak_detector_c.h"
 # define FALSE 0
 # define TRUE 1
 # define READ 0
@@ -28,20 +29,12 @@
 # define ENTER 10
 # define KEY_REMOVE 127
 
-typedef struct s_counter
-{
-	int		i;
-	int		j;
-	int		k;
-	int		a;
-}				t_counter;
 
 typedef struct s_env
 {
 	char			*name;
 	char			*content;
 }               t_env;
-
 
 typedef struct s_cl
 {
@@ -64,7 +57,6 @@ typedef	struct s_type
 	int		a;
 	struct s_type *next;
 	struct s_type *prev;
-
 }				t_type;
 
 typedef struct s_data
@@ -106,11 +98,13 @@ void    parser2(t_list *cmd_list);
 void	print_cmdlist(t_list *listcmd);
 void	parser(void);
 void	print_types(t_type *type);
-void	free_nodes_types(t_type	**tmp);
 void	add_tab_to_ll(t_type **head, char *str, int type, int a);
 void	print_cmd(void);
 void	print_tokkens(void);
 char	*get_cmd_path(char *str, t_list *env);
+
+
+
 char	*my_ft_strjoin(char const *s1, char const *s2);
 void	add_out(size_t *i, char c, t_type **head);
 void	add_in(size_t *i, char c, t_type **head);
@@ -130,4 +124,14 @@ void	free_nodes_cmd(t_list	*tmp);
 char    **ft_print_split(char **d);
 int     is_redirection(int i);
 char	*get_sq_word(t_type *types, int j, int *f);
+
+/*clear tools*/
+void	free_env(void *content);
+void	free_char(void *content);
+void	free_table(char **table);
+void	clear_and_exit(void);
+void	free_nodes_types(t_type	**list);
+void	free_type(void *content);
+
+
 #endif

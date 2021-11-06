@@ -156,6 +156,7 @@ void	expand_cmdlist(t_list *tmp, char *str)
 		get_out(&(cmd->out), list_files, expanded_types);
 		get_in(&(cmd->in), list_files, expanded_types);
 		ft_lstadd_back(&g_data->cmd_list, ft_lstnew(cmd));
+		free_nodes_types(&expanded_types);
 		tmp = tmp->next;
 	}
 	g_data->numcmd = i;
