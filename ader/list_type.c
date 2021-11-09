@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   list_type.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
+/*   By: otaouil <otaouil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 00:25:35 by macbookpro        #+#    #+#             */
-/*   Updated: 2021/10/26 00:28:18 by macbookpro       ###   ########.fr       */
+/*   Updated: 2021/11/09 13:55:10 by otaouil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int	ft_lstsize_type(t_type *type)
 {
@@ -39,13 +39,21 @@ t_type	*ft_lstlast_type(t_type *type)
 
 t_type	*ft_lstnew_type2(char *content, int i, int a)
 {
-	t_type *new;
+	t_type	*new;
 
 	new = (t_type *)malloc(sizeof(t_type) * 1);
-    new->word = content;
-    new->type = i;
+	new->word = content;
+	new->type = i;
 	new->a = a;
 	new->next = NULL;
 	return (new);
 }
 
+void	init_cmd(t_cmd *cmd)
+{
+	cmd->cmd = NULL;
+	cmd->str = NULL;
+	cmd->args_list = NULL;
+	cmd->in = 0;
+	cmd->out = 1;
+}

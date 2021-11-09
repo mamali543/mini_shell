@@ -6,7 +6,7 @@
 /*   By: otaouil <otaouil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 19:52:15 by otaouil           #+#    #+#             */
-/*   Updated: 2021/11/05 14:03:49 by otaouil          ###   ########.fr       */
+/*   Updated: 2021/11/09 14:08:40 by otaouil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	change_oldpwd(t_data *data)
 
 	oldpwd = ft_lstfind(data->env, "OLDPWD");
 	str = oldpwd->content;
-	oldpwd->content = ft_strdup(ft_lstfind(data->env, "PWD")->content);
 	free (str);
+	oldpwd->content = ft_strdup(ft_lstfind(data->env, "PWD")->content);
 }
 
 void	change_pwd(t_data *data)
@@ -83,12 +83,13 @@ void	ft_docd(t_data *data, t_cmd *cmd)
 	str = cmd->str;
 	if (str[1] && !(ft_cmp("-", str[1])))
 		ft_docdret(data);
-	else if (!str[1] || str[1][0] == '~')
+	else if (!str[1])
 		ft_docdsing(data);
 	else if (str[1])
 	{
-		if (chdir(str[1]) <= 0)
+		if (chdir(str[1]) < 0)
 		{
+			perror("cd");
 			data->exitstatu = 1;
 			return ;
 		}

@@ -3,14 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbook <macbook@student.42.fr>            +#+  +:+       +#+        */
+/*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 00:23:27 by macbookpro        #+#    #+#             */
-/*   Updated: 2021/11/05 04:00:02 by macbook          ###   ########.fr       */
+/*   Updated: 2021/11/09 20:12:48 by macbookpro       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
+
+char *ft_strjoin_free(char *s1, char *s2)
+{
+	char *ret;
+	ret = ft_strjoin(s1, s2);
+	free(s1);
+	return (ret);			
+}
 
 void	help_args(t_type **tmp, t_list **args)
 {
@@ -25,7 +33,7 @@ void	help_args(t_type **tmp, t_list **args)
 			if (i == 0)
 				str = ft_strjoin((*tmp)->word, (*tmp)->next->word);
 			else
-				str = ft_strjoin(str, (*tmp)->next->word);
+				str = ft_strjoin_free(str, (*tmp)->next->word);
 			i++;
 			(*tmp) = (*tmp)->next;
 		}
@@ -62,7 +70,7 @@ t_type	*get_node(t_type *types)
 t_list	*fill_list(size_t *i, char c)
 {
 	t_cl	*tmp;
-	t_list  *list;
+	t_list	*list;
 
 	list = NULL;
 	while (g_data->line[(*i)] != c && g_data->line[(*i)])
@@ -73,4 +81,10 @@ t_list	*fill_list(size_t *i, char c)
 		(*i)++;
 	}
 	return (list);
+}
+
+void	clear(void)
+{
+	ft_lstclear(&g_data->cmd_list, &free_cmd);
+	free(g_data->line);
 }

@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   clear.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamali <mamali@student.42.fr>              +#+  +:+       +#+        */
+/*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 03:23:05 by macbook           #+#    #+#             */
-/*   Updated: 2021/11/06 20:20:34 by mamali           ###   ########.fr       */
+/*   Updated: 2021/11/09 20:32:47 by macbookpro       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	free_env(void *content)
 {
-	t_env   *tmp;
+	t_env	*tmp;
 
 	tmp = (t_env *)content;
 	free(tmp->content);
@@ -24,7 +24,7 @@ void	free_env(void *content)
 
 void	free_table(char **table)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (table[i])
@@ -47,10 +47,27 @@ void	free_type(void *content)
 void	free_cmd(void *content)
 {
 	t_cmd	*tmp;
+	t_list	*tmp1;
+	//t_cmd  	*help;
+	//char *str;
 
+	system("leaks minishell");
 	tmp = (t_cmd *)content;
+	//help = tmp;
+	// //str = (char	*)tmp->args_list->content;
+	// //free (str);
+	while(tmp->args_list)
+	{
+		tmp1 = tmp->args_list;
+		printf("ppppp %s \n", (char *)tmp1->content);
+		//if (tmp1->content)
+		//	free(tmp1->content);
+		tmp->args_list = tmp->args_list->next;
+		free(tmp1);	
+	}
+	system("leaks minishell");
+	//free(help->args_list);
 	free(tmp->cmd);
-	// ft_lstclear(&tmp->args_list, &free_type);
 	free_table(tmp->str);
 	free(tmp);
 }
@@ -58,24 +75,4 @@ void	free_cmd(void *content)
 void	free_char(void *content)
 {
 	free(content);
-}
-
-void clear_and_exit(void)
-{
-	ft_lstclear(&g_data->cmd_list, &free_cmd);
-	free(g_data->line);
-}
-
-void	free_nodes_types(t_type	**list)
-{
-	t_type	*tmp;
-
-	while (*list)
-	{
-		tmp = *list;
-		*list = (*list)->next;
-		if (tmp->word != NULL)
-			free(tmp->word);
-		free(tmp);
-	}
 }
