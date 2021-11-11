@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstclear_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
+/*   By: mamali <mamali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 02:08:21 by ael-fadi          #+#    #+#             */
-/*   Updated: 2021/11/09 18:56:32 by macbookpro       ###   ########.fr       */
+/*   Updated: 2021/11/10 22:36:59 by mamali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,5 @@ void	ft_lstclear(t_list **lst, void (*del)(void *))
 		free(str);
 		str = help;
 	}
-	(*lst) = NULL;	
+	(*lst) = NULL;
 }

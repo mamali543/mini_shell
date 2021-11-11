@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_tools.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mamali <mamali@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/10 20:04:55 by macbookpro        #+#    #+#             */
+/*   Updated: 2021/11/10 22:28:41 by mamali           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 void	add_in(size_t *i, char c, t_type **head)
@@ -60,11 +72,13 @@ void	add_sq2(size_t *i, char c, t_type **head, char *str)
 {
 	if (c != '\'')
 	{
-		if (g_data->line[(*i)] == ' ' || !g_data->line[(*i)] || g_data->line[(*i)] == '|')
+		if (g_data->line[(*i)] == ' ' || !g_data->line[(*i)] || \
+			g_data->line[(*i)] == '|' || is_redirection2(g_data->line[(*i)]))
 			ft_lstadd_back_type(head, ft_lstnew_type(str, 2, 0));
 		else
 			ft_lstadd_back_type(head, ft_lstnew_type(str, 2, 1));
 	}
+	free(str);
 }
 
 int	add_sq(size_t *i, char c, t_type **head)
@@ -81,7 +95,8 @@ int	add_sq(size_t *i, char c, t_type **head)
 	{
 		if (g_data->line)
 		{
-			if (g_data->line[(*i)] == ' ' || !g_data->line[(*i)] || g_data->line[(*i)] == '|')
+			if (is_redirection2(g_data->line[(*i)]) || !g_data->line[(*i)] || \
+				g_data->line[(*i)] == '|' || g_data->line[(*i)] == ' ' )
 				ft_lstadd_back_type(head, ft_lstnew_type(str, 1, 0));
 			else
 				ft_lstadd_back_type(head, ft_lstnew_type(str, 1, 1));
@@ -91,7 +106,6 @@ int	add_sq(size_t *i, char c, t_type **head)
 		return (1);
 	}
 	add_sq2(i, c, head, str);
-	free(str);
 	(*i) -= 2;
 	return (1);
 }

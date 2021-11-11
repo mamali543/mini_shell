@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
+/*   By: mamali <mamali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/09 13:51:08 by otaouil           #+#    #+#             */
-/*   Updated: 2021/11/09 17:01:28 by macbookpro       ###   ########.fr       */
+/*   Updated: 2021/11/11 00:02:06 by mamali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,14 +85,12 @@ t_data	*g_data;
 
 int		builtin_echo(char **args, char **env);
 void	excute_cmd(void);
-//void	sig_handler(int sig);
 
-//
 char	**ll_to_dp(t_list *list);
-void	expand_cmdlist(t_list *tmp, char *str);
+void	expand_cmdlist(t_list *tmp, char *str, t_cmd *cmd);
 void	create_file(char *s, t_cmd *cmd);
 char	*ll_to_string(t_list *head);
-void	init_env_list(char **evnp);
+void	init_env_list(char **evnp, int i);
 void	printlist(t_list *env);
 t_type	*expander(t_type *tmp);
 int		real_character(char *line, int i, char c);
@@ -121,8 +119,9 @@ void	expand_word(char *str, t_list **head, int a, size_t i);
 void	add_sq2(size_t *i, char c, t_type **head, char *str);
 void	ffunction2(t_type **head, char **tab, size_t i, int f);
 int		check_words2(int *i, t_type *tmp2);
-int		check_dblq(int *i, t_type *tmp1, int *f, char *str);
-int		check_sq(int *i, t_type *tmp2, int *f, char *str);
+int		check_dblq(int *i, t_type **tmp1, int *f, char *str);
+int		check_sq(int *i, t_type **tmp2, int *f, char *str);
+int		is_redirection2(char c);
 
 char	*my_ft_strjoin(char const *s1, char const *s2);
 void	add_out(size_t *i, char c, t_type **head);
@@ -153,7 +152,6 @@ void	get_in(int *i, t_list *list_files, t_type *expanded_types);
 int		ft_heredoc(char *str);
 t_list	*get_args(t_list **args, t_type *types, t_cmd **cmd);
 
-/*clear tools*/
 void	free_env(void *content);
 void	free_char(void *content);
 void	free_table(char **table);

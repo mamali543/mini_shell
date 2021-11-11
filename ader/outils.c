@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   outils.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
+/*   By: mamali <mamali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 00:19:25 by macbookpro        #+#    #+#             */
-/*   Updated: 2021/11/09 19:47:20 by macbookpro       ###   ########.fr       */
+/*   Updated: 2021/11/10 22:27:07 by mamali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,23 +72,9 @@ void	add_tab_to_ll(t_type **head, char *str, int type, int a)
 		ft_lstadd_back_type(head, ft_lstnew_type2(tab[i], type, a));
 		i++;
 	}
-	free(tab);
+	free (tab);
 }
 
-// void	free_nodes_types(t_type	**tmp)
-// {
-// 	t_type	*tmp2;
-// 	//tmp2 = *tmp;
-// 	//print_types(*tmp);
-// 	while (*tmp)
-// 	{
-// 		tmp2 = *tmp;
-// 		*tmp = (*tmp)->next;
-// 		if (tmp2->word != NULL)
-// 			free(tmp2->word);
-// 		free(tmp2);
-// 	}
-// }
 void	free_nodes_env(t_list	**tmp)
 {
 	t_env	*tmp2;
@@ -101,25 +87,6 @@ void	free_nodes_env(t_list	**tmp)
 			free(tmp2->name);
 		if (tmp2->content != NULL)
 			free(tmp2->content);
-		free(tmp2);
-	}
-}
-
-void	free_nodes_cmd(t_list	*tmp)
-{
-	t_cmd	*tmp2;
-	t_type	*t;
-	t_list	*p;
-
-	while (tmp)
-	{
-		tmp2 = (tmp)->content;
-		p = (tmp2->args_list);
-		t = (t_type *)p->content;
-		tmp = (tmp)->next;
-		if (tmp2->cmd != NULL)
-			free(tmp2->cmd);
-		ft_free_split(tmp2->str);
 		free(tmp2);
 	}
 }

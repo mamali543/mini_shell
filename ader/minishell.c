@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mamali <mamali@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/10 22:24:12 by mamali            #+#    #+#             */
+/*   Updated: 2021/11/10 22:31:49 by mamali           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 t_list	*get_args(t_list **args, t_type *types, t_cmd **cmd)
@@ -20,7 +32,7 @@ t_list	*get_args(t_list **args, t_type *types, t_cmd **cmd)
 					help_args(&tmp, args);
 			}
 			else
-				ft_lstadd_back(args, ft_lstnew(tmp->word));
+				ft_lstadd_back(args, ft_lstnew(ft_strdup(tmp->word)));
 		}
 		tmp = tmp->next;
 	}
@@ -108,10 +120,9 @@ void	get_command(t_type *tmp2, char *str,
 
 int	main(int argc, char **argv, char **env)
 {
-	init_env_list(env);
 	argc = 0;
 	argv = NULL;
-	signal(SIGQUIT, sig_handler);
+	init_env_list(env, argc);
 	while (1)
 	{
 		init_data();
@@ -132,5 +143,6 @@ int	main(int argc, char **argv, char **env)
 		clear();
 	}
 	ft_lstclear(&g_data->env, &free_env);
+	free(g_data);
 	return (0);
 }

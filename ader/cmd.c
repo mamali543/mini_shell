@@ -6,23 +6,16 @@
 /*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 00:23:27 by macbookpro        #+#    #+#             */
-/*   Updated: 2021/11/09 20:12:48 by macbookpro       ###   ########.fr       */
+/*   Updated: 2021/11/10 19:05:34 by macbookpro       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char *ft_strjoin_free(char *s1, char *s2)
-{
-	char *ret;
-	ret = ft_strjoin(s1, s2);
-	free(s1);
-	return (ret);			
-}
-
 void	help_args(t_type **tmp, t_list **args)
 {
 	char	*str;
+	char	*swap;
 	int		i;
 
 	i = 0;
@@ -33,14 +26,18 @@ void	help_args(t_type **tmp, t_list **args)
 			if (i == 0)
 				str = ft_strjoin((*tmp)->word, (*tmp)->next->word);
 			else
-				str = ft_strjoin_free(str, (*tmp)->next->word);
+			{
+				swap = str;
+				str = ft_strjoin(swap, (*tmp)->next->word);
+				free(swap);
+			}
 			i++;
 			(*tmp) = (*tmp)->next;
 		}
 		ft_lstadd_back(args, ft_lstnew(str));
 	}
 	else
-		ft_lstadd_back(args, ft_lstnew((*tmp)->word));
+		ft_lstadd_back(args, ft_lstnew(ft_strdup((*tmp)->word)));
 }
 
 t_type	*get_cmd(t_type *type)

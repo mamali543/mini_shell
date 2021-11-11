@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tools.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/10 20:03:45 by macbookpro        #+#    #+#             */
+/*   Updated: 2021/11/10 20:03:46 by macbookpro       ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 t_type	*ft_lstnew_type(char *content, int i, int b)
@@ -25,7 +37,7 @@ t_type	*ft_lstlasttype(t_type *lst)
 void	ft_lstadd_back_type(t_type **alst, t_type *new)
 {
 	t_type	*last;
-			// system("leaks minishell");
+
 	new->next = NULL;
 	last = *alst;
 	if (!(*alst))

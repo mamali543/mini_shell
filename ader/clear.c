@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clear.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
+/*   By: mamali <mamali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 03:23:05 by macbook           #+#    #+#             */
-/*   Updated: 2021/11/09 20:32:47 by macbookpro       ###   ########.fr       */
+/*   Updated: 2021/11/10 22:26:22 by mamali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,26 +47,21 @@ void	free_type(void *content)
 void	free_cmd(void *content)
 {
 	t_cmd	*tmp;
-	t_list	*tmp1;
-	//t_cmd  	*help;
-	//char *str;
+	t_list	*args;
+	t_list	*help;
 
-	system("leaks minishell");
 	tmp = (t_cmd *)content;
-	//help = tmp;
-	// //str = (char	*)tmp->args_list->content;
-	// //free (str);
-	while(tmp->args_list)
+	args = tmp->args_list;
+	while (args)
 	{
-		tmp1 = tmp->args_list;
-		printf("ppppp %s \n", (char *)tmp1->content);
-		//if (tmp1->content)
-		//	free(tmp1->content);
-		tmp->args_list = tmp->args_list->next;
-		free(tmp1);	
+		if (args->next)
+			help = args->next;
+		else
+			help = NULL;
+		free(args->content);
+		free(args);
+		args = help;
 	}
-	system("leaks minishell");
-	//free(help->args_list);
 	free(tmp->cmd);
 	free_table(tmp->str);
 	free(tmp);
